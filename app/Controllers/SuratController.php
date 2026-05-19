@@ -161,10 +161,41 @@ class SuratController extends BaseController
             return redirect()->to('/dashboard')->with('error', 'Akses ditolak. Hanya kepala desa yang dapat mengakses halaman ini.');
         }
 
-        return view('dashboard/placeholder', [
+        $suratModel = new SuratModel();
+        
+        // Get all pending letters
+        $surat_menunggu = $suratModel
+            ->select('surat.*, jenis_surat.nama_surat, users.username, users.nama as nama_pemohon')
+            ->join('jenis_surat', 'jenis_surat.id_jenis = surat.id_jenis')
+            ->join('users', 'users.id_user = surat.user_id')
+            ->where('surat.status_surat', 'Menunggu')
+            ->orderBy('surat.created_at', 'DESC')
+            ->findAll();
+
+        // Get approved letters
+        $surat_disetujui = $suratModel
+            ->select('surat.*, jenis_surat.nama_surat, users.username, users.nama as nama_pemohon')
+            ->join('jenis_surat', 'jenis_surat.id_jenis = surat.id_jenis')
+            ->join('users', 'users.id_user = surat.user_id')
+            ->where('surat.status_surat', 'Disetujui')
+            ->orderBy('surat.updated_at', 'DESC')
+            ->findAll();
+
+        // Get rejected letters
+        $surat_ditolak = $suratModel
+            ->select('surat.*, jenis_surat.nama_surat, users.username, users.nama as nama_pemohon')
+            ->join('jenis_surat', 'jenis_surat.id_jenis = surat.id_jenis')
+            ->join('users', 'users.id_user = surat.user_id')
+            ->where('surat.status_surat', 'Ditolak')
+            ->orderBy('surat.updated_at', 'DESC')
+            ->findAll();
+
+        return view('dashboard/kepala_desa_persetujuan', [
             'nama' => $session->get('nama'),
             'role' => $session->get('role'),
-            'page_title' => 'Persetujuan Surat'
+            'surat_menunggu' => $surat_menunggu,
+            'surat_disetujui' => $surat_disetujui,
+            'surat_ditolak' => $surat_ditolak
         ]);
     }
 
