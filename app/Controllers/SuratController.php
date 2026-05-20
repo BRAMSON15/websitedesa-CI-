@@ -167,7 +167,7 @@ class SuratController extends BaseController
         $surat_menunggu = $suratModel
             ->select('surat.*, jenis_surat.nama_surat, users.username, users.nama as nama_pemohon')
             ->join('jenis_surat', 'jenis_surat.id_jenis = surat.id_jenis')
-            ->join('users', 'users.id_user = surat.user_id')
+            ->join('users', 'users.user_id = surat.user_id')
             ->where('surat.status_surat', 'Menunggu')
             ->orderBy('surat.created_at', 'DESC')
             ->findAll();
@@ -176,7 +176,7 @@ class SuratController extends BaseController
         $surat_disetujui = $suratModel
             ->select('surat.*, jenis_surat.nama_surat, users.username, users.nama as nama_pemohon')
             ->join('jenis_surat', 'jenis_surat.id_jenis = surat.id_jenis')
-            ->join('users', 'users.id_user = surat.user_id')
+            ->join('users', 'users.user_id = surat.user_id')
             ->where('surat.status_surat', 'Disetujui')
             ->orderBy('surat.updated_at', 'DESC')
             ->findAll();
@@ -185,7 +185,7 @@ class SuratController extends BaseController
         $surat_ditolak = $suratModel
             ->select('surat.*, jenis_surat.nama_surat, users.username, users.nama as nama_pemohon')
             ->join('jenis_surat', 'jenis_surat.id_jenis = surat.id_jenis')
-            ->join('users', 'users.id_user = surat.user_id')
+            ->join('users', 'users.user_id = surat.user_id')
             ->where('surat.status_surat', 'Ditolak')
             ->orderBy('surat.updated_at', 'DESC')
             ->findAll();
