@@ -58,6 +58,52 @@
             </div>
         </div>
 
+        <!-- Messaging Section for Admin -->
+        <?php if($role == 'admin'): ?>
+        <div class="card" style="margin-bottom: 2rem;">
+            <h4 style="color: var(--dark); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ri-mail-send-line" style="color: var(--primary);"></i> Kirim Informasi ke Masyarakat
+            </h4>
+            <form id="formKirimPesan" method="POST" action="<?= base_url('/pesan/kirim') ?>">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; color: var(--dark); font-weight: 600; margin-bottom: 0.5rem;">Tipe Pesan</label>
+                    <select name="tipe_pesan" style="width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; color: var(--dark);">
+                        <option value="info">Informasi</option>
+                        <option value="warning">Peringatan</option>
+                        <option value="success">Pengumuman Baik</option>
+                        <option value="error">Penting</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; color: var(--dark); font-weight: 600; margin-bottom: 0.5rem;">Penerima</label>
+                    <select name="user_id_penerima" id="userSelect" style="width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; color: var(--dark);">
+                        <option value="">-- Pilih Penerima --</option>
+                        <option value="broadcast">📢 Kirim ke Semua Masyarakat</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; color: var(--dark); font-weight: 600; margin-bottom: 0.5rem;">Judul Pesan</label>
+                    <input type="text" name="judul" placeholder="Masukkan judul pesan" required style="width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; color: var(--dark); box-sizing: border-box;">
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; color: var(--dark); font-weight: 600; margin-bottom: 0.5rem;">Isi Pesan</label>
+                    <textarea name="isi_pesan" placeholder="Masukkan isi pesan..." required style="width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; color: var(--dark); min-height: 120px; box-sizing: border-box; font-family: inherit;"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 1rem;">
+                    <button type="submit" class="btn-primary" style="padding: 0.8rem 1.5rem; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        <i class="ri-send-plane-line"></i> Kirim Pesan
+                    </button>
+                    <button type="reset" class="btn-outline" style="padding: 0.8rem 1.5rem; font-size: 0.95rem;">Bersihkan</button>
+                </div>
+            </form>
+        </div>
+        <?php endif; ?>
+
+        <!-- Information Card -->
         <div class="card" style="padding: 3rem; text-align: center;">
             <div style="width: 100px; height: 100px; background: rgba(79, 70, 229, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem;">
                 <i class="ri-tools-fill" style="font-size: 3.5rem; color: var(--primary);"></i>
@@ -67,4 +113,100 @@
         </div>
     </div>
 </div>
+
+<script>
+// Load users when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    <?php if($role == 'admin'): ?>
+    loadDaftarUser();
+    <?php endif; ?>
+});
+
+function loadDaftarUser() {
+    fetch('<?= base_url('/pesan/daftar-user') ?>')
+        .then(response => response.json())
+        .then(data => {
+            if(data.success && data.data) {
+                const userSelect = document.getElementById('userSelect');
+                data.data.forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user.user_id;
+                    option.textContent = user.nama + ' (' + user.role + ')';
+                    userSelect.appendChild(option);
+                });
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Handle form submission
+<?php if($role == 'admin'): ?>
+document.getElementById('formKirimPesan').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const userSelect = document.getElementById('userSelect').value;
+    const judul = document.querySelector('input[name="judul"]').value;
+    const isiPesan = document.querySelector('textarea[name="isi_pesan"]').value;
+    const tipePesan = document.querySelector('select[name="tipe_pesan"]').value;
+
+    if(!userSelect) {
+        alert('Pilih penerima pesan terlebih dahulu');
+        return;
+    }
+
+    if(userSelect === 'broadcast') {
+        // Send broadcast message
+        fetch('<?= base_url('/pesan/kirim-broadcast') ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'judul=' + encodeURIComponent(judul) + 
+                  '&isi_pesan=' + encodeURIComponent(isiPesan) + 
+                  '&tipe_pesan=' + encodeURIComponent(tipePesan)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                alert('Pesan broadcast berhasil dikirim ke semua pengguna');
+                document.getElementById('formKirimPesan').reset();
+                loadDaftarUser();
+            } else {
+                alert('Gagal mengirim pesan: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat mengirim pesan');
+        });
+    } else {
+        // Send personal message
+        fetch('<?= base_url('/pesan/kirim') ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'user_id_penerima=' + encodeURIComponent(userSelect) + 
+                  '&judul=' + encodeURIComponent(judul) + 
+                  '&isi_pesan=' + encodeURIComponent(isiPesan) + 
+                  '&tipe_pesan=' + encodeURIComponent(tipePesan)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                alert('Pesan berhasil dikirim');
+                document.getElementById('formKirimPesan').reset();
+                loadDaftarUser();
+            } else {
+                alert('Gagal mengirim pesan: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat mengirim pesan');
+        });
+    }
+});
+<?php endif; ?>
+</script>
 <?= $this->endSection() ?>

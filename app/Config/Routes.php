@@ -63,3 +63,11 @@ $routes->get('/struktur/lihat', 'StrukturController::lihat');
 // User Profil Routes
 $routes->get('/user/profil', 'UserController::profil');
 
+// Pesan Routes
+$routes->post('/pesan/kirim', 'PesanController::kirimPesan');
+$routes->post('/pesan/kirim-broadcast', 'PesanController::kirimPesanBroadcast');
+$routes->get('/pesan/get', 'PesanController::getPesan');
+$routes->get('/pesan/count-belum-dibaca', 'PesanController::getCountPesanBelumDibaca');
+$routes->get('/pesan/tandai-dibaca/(:num)', 'PesanController::tandaiSudahDibaca/$1');
+$routes->get('/pesan/daftar-user', 'PesanController::getDaftarUser');
+
