@@ -169,23 +169,6 @@
         <div class="card" style="padding: 0; overflow: hidden;">
             <div style="padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
                 <h4 style="color: var(--dark); display: flex; align-items: center; gap: 0.5rem;">
-                    <i class="ri-mail-line" style="color: var(--primary);"></i> Pesan dari Kantor Desa
-                </h4>
-                <button class="btn-outline" style="padding: 0.4rem 1rem; font-size: 0.9rem;" onclick="loadPesan()">Refresh</button>
-            </div>
-            <div id="pesanContainer" style="padding: 3rem 0; text-align: center; color: #94a3b8; background: #fafafa;">
-                <div style="width: 80px; height: 80px; background: white; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
-                    <i class="ri-inbox-archive-line" style="font-size: 2.5rem; color: #cbd5e1;"></i>
-                </div>
-                <h5 style="color: #64748b; margin-bottom: 0.5rem; font-size: 1.1rem;">Belum Ada Pesan</h5>
-                <p style="font-size: 0.95rem;">Pesan dari kantor desa akan muncul di sini.</p>
-            </div>
-        </div>
-
-        <!-- Recent Submissions -->
-        <div class="card" style="padding: 0; overflow: hidden; margin-top: 2rem;">
-            <div style="padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
-                <h4 style="color: var(--dark); display: flex; align-items: center; gap: 0.5rem;">
                     <i class="ri-file-list-3-line" style="color: var(--primary);"></i> Riwayat Pengajuan Surat
                 </h4>
                 <button class="btn-outline" style="padding: 0.4rem 1rem; font-size: 0.9rem;">Lihat Semua</button>
@@ -203,86 +186,4 @@
         </div>
     </div>
 </div>
-
-<script>
-// Load messages when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    loadPesan();
-});
-
-function loadPesan() {
-    fetch('<?= base_url('/pesan/get') ?>')
-        .then(response => response.json())
-        .then(data => {
-            if(data.success && data.data && data.data.length > 0) {
-                const pesanContainer = document.getElementById('pesanContainer');
-                pesanContainer.innerHTML = '';
-                
-                data.data.forEach(pesan => {
-                    const tipePesanColors = {
-                        'info': { bg: '#eff6ff', border: '#3b82f6', icon: 'ri-information-line', color: '#1e40af' },
-                        'warning': { bg: '#fef3c7', border: '#f59e0b', icon: 'ri-alert-line', color: '#92400e' },
-                        'success': { bg: '#f0fdf4', border: '#22c55e', icon: 'ri-checkbox-circle-line', color: '#15803d' },
-                        'error': { bg: '#fee2e2', border: '#ef4444', icon: 'ri-error-warning-line', color: '#991b1b' }
-                    };
-                    
-                    const tipePesan = tipePesanColors[pesan.tipe_pesan] || tipePesanColors['info'];
-                    
-                    const pesanDiv = document.createElement('div');
-                    pesanDiv.style.cssText = `
-                        background: ${tipePesan.bg};
-                        border-left: 4px solid ${tipePesan.border};
-                        padding: 1.5rem;
-                        margin-bottom: 1rem;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        transition: transform 0.2s;
-                    `;
-                    pesanDiv.onmouseover = function() { this.style.transform = 'translateX(5px)'; };
-                    pesanDiv.onmouseout = function() { this.style.transform = 'translateX(0)'; };
-                    
-                    const tanggal = new Date(pesan.created_at).toLocaleDateString('id-ID', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    });
-                    
-                    pesanDiv.innerHTML = `
-                        <div style="display: flex; gap: 1rem;">
-                            <div style="width: 50px; height: 50px; background: ${tipePesan.border}; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;">
-                                <i class="${tipePesan.icon}" style="font-size: 1.5rem;"></i>
-                            </div>
-                            <div style="flex: 1;">
-                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
-                                    <h5 style="color: ${tipePesan.color}; margin: 0; font-weight: 600;">${pesan.judul}</h5>
-                                    <span style="font-size: 0.8rem; color: #64748b;">${tanggal}</span>
-                                </div>
-                                <p style="color: ${tipePesan.color}; margin: 0; line-height: 1.6; font-size: 0.95rem;">${pesan.isi_pesan}</p>
-                                ${pesan.status_baca === 'belum_dibaca' ? '<span style="display: inline-block; margin-top: 0.5rem; background: ' + tipePesan.border + '; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">BARU</span>' : ''}
-                            </div>
-                        </div>
-                    `;
-                    
-                    pesanContainer.appendChild(pesanDiv);
-                    
-                    // Mark as read when clicked
-                    if(pesan.status_baca === 'belum_dibaca') {
-                        pesanDiv.addEventListener('click', function() {
-                            fetch('<?= base_url('/pesan/tandai-dibaca/') ?>' + pesan.id_pesan)
-                                .then(response => response.json())
-                                .then(data => {
-                                    if(data.success) {
-                                        loadPesan();
-                                    }
-                                });
-                        });
-                    }
-                });
-            }
-        })
-        .catch(error => console.error('Error:', error));
-}
-</script>
 <?= $this->endSection() ?>

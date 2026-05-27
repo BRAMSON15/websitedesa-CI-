@@ -117,45 +117,6 @@
         <div class="card" style="padding: 0; overflow: hidden;">
             <div style="padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
                 <h4 style="color: var(--dark); display: flex; align-items: center; gap: 0.5rem;">
-                    <i class="ri-mail-send-line" style="color: var(--primary);"></i> Kirim Informasi ke Masyarakat
-                </h4>
-            </div>
-            <div style="padding: 1.5rem;">
-                <form id="formKirimPesan" method="POST" action="<?= base_url('/pesan/kirim-broadcast') ?>">
-                    <div style="margin-bottom: 1.5rem;">
-                        <label style="display: block; color: var(--dark); font-weight: 600; margin-bottom: 0.5rem;">Tipe Pesan</label>
-                        <select name="tipe_pesan" style="width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; color: var(--dark);">
-                            <option value="info">Informasi</option>
-                            <option value="warning">Peringatan</option>
-                            <option value="success">Pengumuman Baik</option>
-                            <option value="error">Penting</option>
-                        </select>
-                    </div>
-
-                    <div style="margin-bottom: 1.5rem;">
-                        <label style="display: block; color: var(--dark); font-weight: 600; margin-bottom: 0.5rem;">Judul Pesan</label>
-                        <input type="text" name="judul" placeholder="Masukkan judul pesan" required style="width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; color: var(--dark); box-sizing: border-box;">
-                    </div>
-
-                    <div style="margin-bottom: 1.5rem;">
-                        <label style="display: block; color: var(--dark); font-weight: 600; margin-bottom: 0.5rem;">Isi Pesan</label>
-                        <textarea name="isi_pesan" placeholder="Masukkan isi pesan..." required style="width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; color: var(--dark); min-height: 120px; box-sizing: border-box; font-family: inherit;"></textarea>
-                    </div>
-
-                    <div style="display: flex; gap: 1rem;">
-                        <button type="submit" class="btn-primary" style="padding: 0.8rem 1.5rem; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.5rem;">
-                            <i class="ri-send-plane-line"></i> Kirim ke Semua Masyarakat
-                        </button>
-                        <button type="reset" class="btn-outline" style="padding: 0.8rem 1.5rem; font-size: 0.95rem;">Bersihkan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Pending Approvals List -->
-        <div class="card" style="padding: 0; overflow: hidden; margin-top: 2rem;">
-            <div style="padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
-                <h4 style="color: var(--dark); display: flex; align-items: center; gap: 0.5rem;">
                     <i class="ri-file-list-3-line" style="color: var(--primary);"></i> Surat Menunggu Persetujuan
                 </h4>
                 <button class="btn-outline" style="padding: 0.4rem 1rem; font-size: 0.9rem;">Lihat Semua</button>
