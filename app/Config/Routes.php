@@ -37,6 +37,7 @@ $routes->get('/surat/form/(:num)', 'SuratController::form/$1');
 $routes->post('/surat/submit', 'SuratController::submit');
 $routes->get('/surat/status', 'SuratController::status');
 $routes->get('/surat/detail/(:num)', 'SuratController::detail/$1');
+$routes->get('/surat/hapus/(:num)', 'SuratController::hapus/$1');
 
 // Template Routes
 $routes->get('/template', 'TemplateController::index');

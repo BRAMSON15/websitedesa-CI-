@@ -590,4 +590,32 @@ class SuratController extends BaseController
                 return $keperluan;
         }
     }
+
+    // Admin: Hapus pengajuan surat
+    public function hapus($id_surat)
+    {
+        $auth = $this->checkAuth();
+        if($auth) return $auth;
+
+        $session = session();
+        
+        // Hanya admin yang bisa menghapus
+        if($session->get('role') !== 'admin') {
+            return redirect()->to('/dashboard')->with('error', 'Akses ditolak');
+        }
+
+        // Cari surat
+        $surat = $this->suratModel->find($id_surat);
+        if(!$surat) {
+            return redirect()->to('/surat/kelola')->with('error', 'Pengajuan surat tidak ditemukan');
+        }
+
+        try {
+            // Hapus surat dari database
+            $this->suratModel->delete($id_surat);
+            return redirect()->to('/surat/kelola')->with('success', 'Pengajuan surat berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->to('/surat/kelola')->with('error', 'Gagal menghapus pengajuan surat: ' . $e->getMessage());
+        }
+    }
 }

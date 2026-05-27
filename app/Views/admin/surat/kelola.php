@@ -202,6 +202,13 @@
                                         <i class="ri-download-line"></i> PDF
                                     </a>
                                     <?php endif; ?>
+                                    
+                                    <button onclick="hapusSurat(<?= $surat['id_surat'] ?>)" 
+                                            style="padding: 0.4rem 0.8rem; background: #fee2e2; color: #ef4444; border: 1px solid #fecaca; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem; transition: all 0.2s;"
+                                            onmouseover="this.style.background='#fecaca'; this.style.color='#991b1b';"
+                                            onmouseout="this.style.background='#fee2e2'; this.style.color='#ef4444';">
+                                        <i class="ri-delete-bin-line"></i> Hapus
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -213,4 +220,12 @@
         </div>
     </div>
 </div>
+
+<script>
+function hapusSurat(id_surat) {
+    if(confirm('Apakah Anda yakin ingin menghapus pengajuan surat ini? Tindakan ini tidak dapat dibatalkan.')) {
+        window.location.href = '<?= base_url('/surat/hapus/') ?>' + id_surat;
+    }
+}
+</script>
 <?= $this->endSection() ?>
