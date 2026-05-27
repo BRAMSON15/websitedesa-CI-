@@ -113,17 +113,6 @@
                         <p style="font-size: 0.85rem; opacity: 0.9;">Proses pengajuan</p>
                     </div>
                 </a>
-                
-                <a href="<?= base_url('/profil/kelola_umum') ?>" style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: linear-gradient(135deg, #f59e0b, #fbbf24); border-radius: 10px; color: white; text-decoration: none; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                    <div style="width: 45px; height: 45px; background: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                        <i class="ri-settings-3-line" style="font-size: 1.5rem;"></i>
-                    </div>
-                    <div>
-                        <p style="font-weight: 600; margin-bottom: 0.2rem;">Kelola Konten</p>
-                        <p style="font-size: 0.85rem; opacity: 0.9;">Update informasi</p>
-                    </div>
-                </a>
-                
                 <a href="<?= base_url('/peta/kelola') ?>" style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: linear-gradient(135deg, #8b5cf6, #a78bfa); border-radius: 10px; color: white; text-decoration: none; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                     <div style="width: 45px; height: 45px; background: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
                         <i class="ri-map-pin-add-line" style="font-size: 1.5rem;"></i>
