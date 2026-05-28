@@ -48,7 +48,12 @@ $routes->get('/template/preview/(:any)', 'TemplateController::preview/$1');
 
 // Peta Routes
 $routes->get('/peta', 'PetaController::index');
+$routes->get('/peta/detail', 'PetaController::detail');
+$routes->get('/peta/statistik', 'PetaController::statistik');
+$routes->get('/peta/export', 'PetaController::export');
+$routes->get('/peta/galeri', 'PetaController::galeri');
 $routes->get('/peta/kelola', 'PetaController::kelola');
+$routes->post('/peta/simpanPeta', 'PetaController::simpanPeta');
 
 // Profil Desa Routes
 $routes->get('/profil/kelola_umum', 'ProfilController::kelola_umum');

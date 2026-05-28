@@ -96,6 +96,9 @@ class AuthController extends BaseController
             'role' => 'masyarakat'
         ];
 
+        $db = \Config\Database::connect();
+        $db->transStart();
+
         try {
             // Insert user
             $userModel->insert($userData);
@@ -105,12 +108,12 @@ class AuthController extends BaseController
             $pendudukData = [
                 'nik' => $nik,
                 'nama' => $nama,
-                'ttl' => '', // Will be filled later by admin if needed
+                'ttl' => null,
                 'jenis_kelamin' => 'Laki-laki', // Default value
                 'alamat' => $alamat,
-                'agama' => '', // Will be filled later by admin if needed
-                'pekerjaan' => '', // Will be filled later by admin if needed
-                'status' => '', // Will be filled later by admin if needed
+                'agama' => null,
+                'pekerjaan' => null,
+                'status' => null,
                 'nomor_kk' => null
             ];
             
@@ -119,9 +122,16 @@ class AuthController extends BaseController
                 throw new \Exception('Gagal menyimpan data penduduk: ' . json_encode($pendudukModel->errors()));
             }
 
+            $db->transComplete();
+
+            if ($db->transStatus() === false) {
+                throw new \Exception('Database transaction failed');
+            }
+
             $session->setFlashdata('success', 'Akun berhasil dibuat! Silakan login dengan username dan NIK Anda sebagai password.');
             return redirect()->to('/login');
         } catch (\Exception $e) {
+            $db->transRollback();
             log_message('error', 'Registration error: ' . $e->getMessage());
             $session->setFlashdata('msg', 'Gagal membuat akun: ' . $e->getMessage());
             return redirect()->back()->withInput();

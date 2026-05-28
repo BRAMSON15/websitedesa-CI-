@@ -156,18 +156,18 @@
                                     </div>
                                     <div>
                                         <p style="color: var(--dark); font-weight: 600; margin: 0;"><?= esc($penduduk['nama']) ?></p>
-                                        <p style="color: #64748b; font-size: 0.85rem; margin: 0;"><?= esc($penduduk['status']) ?></p>
+                                        <p style="color: #64748b; font-size: 0.85rem; margin: 0;"><?= $penduduk['status'] ? esc($penduduk['status']) : '<span style="color:#cbd5e1; font-style:italic;">Belum diisi</span>' ?></p>
                                     </div>
                                 </div>
                             </td>
-                            <td style="padding: 1rem; color: #64748b;"><?= esc($penduduk['ttl']) ?></td>
+                            <td style="padding: 1rem; color: #64748b;"><?= $penduduk['ttl'] ? esc($penduduk['ttl']) : '<span style="color:#cbd5e1; font-style:italic;">Belum diisi</span>' ?></td>
                             <td style="padding: 1rem;">
                                 <span style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.8rem; background: <?= $penduduk['jenis_kelamin'] == 'Laki-laki' ? '#dbeafe' : '#fce7f3' ?>; color: <?= $penduduk['jenis_kelamin'] == 'Laki-laki' ? '#1e40af' : '#be185d' ?>; border-radius: 15px; font-size: 0.85rem; font-weight: 600;">
                                     <i class="<?= $penduduk['jenis_kelamin'] == 'Laki-laki' ? 'ri-men-line' : 'ri-women-line' ?>"></i>
                                     <?= esc($penduduk['jenis_kelamin']) ?>
                                 </span>
                             </td>
-                            <td style="padding: 1rem; color: #64748b;"><?= esc($penduduk['pekerjaan']) ?></td>
+                            <td style="padding: 1rem; color: #64748b;"><?= $penduduk['pekerjaan'] ? esc($penduduk['pekerjaan']) : '<span style="color:#cbd5e1; font-style:italic;">Belum diisi</span>' ?></td>
                             <td style="padding: 1rem; text-align: center;">
                                 <div style="display: flex; gap: 0.5rem; justify-content: center;">
                                     <a href="<?= base_url('/penduduk/detail/' . $penduduk['nik']) ?>" 
