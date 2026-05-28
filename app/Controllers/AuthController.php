@@ -51,4 +51,58 @@ class AuthController extends BaseController
         $session->destroy();
         return redirect()->to('/login');
     }
+
+    public function register()
+    {
+        return view('auth/register');
+    }
+
+    public function processRegister()
+    {
+        $session = session();
+        $model = new UserModel();
+        
+        // Get form data
+        $nama = $this->request->getVar('nama');
+        $nik = $this->request->getVar('nik');
+        $username = $this->request->getVar('username');
+        $email = $this->request->getVar('email');
+        $no_telepon = $this->request->getVar('no_telepon');
+        $alamat = $this->request->getVar('alamat');
+        
+        // Validasi input
+        $rules = [
+            'nama' => 'required|min_length[3]|max_length[100]',
+            'nik' => 'required|exact_length[16]|numeric|is_unique[users.nik]',
+            'username' => 'required|min_length[3]|max_length[100]|is_unique[users.username]|regex_match[/^[a-zA-Z0-9_]+$/]',
+            'email' => 'required|valid_email|is_unique[users.email]',
+            'no_telepon' => 'required|min_length[10]|max_length[20]',
+            'alamat' => 'required|min_length[10]'
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('msg', implode(', ', $this->validator->getErrors()));
+        }
+
+        // Prepare data for insertion
+        $data = [
+            'nama' => $nama,
+            'nik' => $nik,
+            'username' => $username,
+            'email' => $email,
+            'no_telepon' => $no_telepon,
+            'alamat' => $alamat,
+            'password' => password_hash($nik, PASSWORD_DEFAULT), // NIK as password
+            'role' => 'masyarakat'
+        ];
+
+        try {
+            $model->insert($data);
+            $session->setFlashdata('success', 'Akun berhasil dibuat! Silakan login dengan username dan NIK Anda sebagai password.');
+            return redirect()->to('/login');
+        } catch (\Exception $e) {
+            $session->setFlashdata('msg', 'Gagal membuat akun: ' . $e->getMessage());
+            return redirect()->back()->withInput();
+        }
+    }
 }

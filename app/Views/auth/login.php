@@ -22,6 +22,12 @@
                 </div>
             <?php endif;?>
 
+            <?php if(session()->getFlashdata('success')):?>
+                <div style="background: #d1fae5; color: #10b981; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem; text-align: center; font-weight: 500;">
+                    <i class="ri-checkbox-circle-line"></i> <?= session()->getFlashdata('success') ?>
+                </div>
+            <?php endif;?>
+
             <form action="<?= base_url('/processLogin') ?>" method="post">
                 <div class="form-group">
                     <label class="form-label" style="font-size: 0.9rem;">Username</label>
@@ -44,7 +50,7 @@
                 </div>
             </form>
             <div style="text-align: center; margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1.5rem;">
-                <p style="font-size: 0.9rem; color: #64748b;">Belum memiliki akun warga? <br><a href="#" style="color: var(--primary); text-decoration: none; font-weight: 600; display: inline-block; margin-top: 0.5rem;">Hubungi Administrator Desa</a></p>
+                <p style="font-size: 0.9rem; color: #64748b;">Belum memiliki akun? <br><a href="<?= base_url('/register') ?>" style="color: var(--primary); text-decoration: none; font-weight: 600; display: inline-block; margin-top: 0.5rem;">Daftar sekarang!</a></p>
             </div>
         </div>
     </div>

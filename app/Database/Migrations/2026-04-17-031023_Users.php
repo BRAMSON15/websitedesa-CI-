@@ -27,6 +27,26 @@ class Users extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => '255',
             ],
+            'nik' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '16',
+                'null'       => true,
+            ],
+            'email' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '100',
+                'null'       => true,
+            ],
+            'no_telepon' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '20',
+                'null'       => true,
+            ],
+            'alamat' => [
+                'type'       => 'TEXT',
+                'null'       => true,
+            ],
+        
             'role' => [
                 'type'       => 'ENUM',
                 'constraint' => ['admin', 'kepala_desa', 'masyarakat'],

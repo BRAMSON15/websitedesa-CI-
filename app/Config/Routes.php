@@ -10,6 +10,8 @@ $routes->get('/', 'Home::index');
 // Authentication Routes
 $routes->get('/login', 'AuthController::login');
 $routes->post('/processLogin', 'AuthController::processLogin');
+$routes->get('/register', 'AuthController::register');
+$routes->post('/processRegister', 'AuthController::processRegister');
 $routes->get('/logout', 'AuthController::logout');
 
 // Dashboard Router
