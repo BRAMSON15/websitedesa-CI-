@@ -60,7 +60,7 @@ class AuthController extends BaseController
     public function processRegister()
     {
         $session = session();
-        $model = new UserModel();
+        $userModel = new UserModel();
         
         // Get form data
         $nama = $this->request->getVar('nama');
@@ -84,8 +84,8 @@ class AuthController extends BaseController
             return redirect()->back()->withInput()->with('msg', implode(', ', $this->validator->getErrors()));
         }
 
-        // Prepare data for insertion
-        $data = [
+        // Prepare user data for insertion
+        $userData = [
             'nama' => $nama,
             'nik' => $nik,
             'username' => $username,
@@ -97,10 +97,32 @@ class AuthController extends BaseController
         ];
 
         try {
-            $model->insert($data);
+            // Insert user
+            $userModel->insert($userData);
+
+            // Also insert into penduduk table
+            $pendudukModel = new \App\Models\PendudukModel();
+            $pendudukData = [
+                'nik' => $nik,
+                'nama' => $nama,
+                'ttl' => '', // Will be filled later by admin if needed
+                'jenis_kelamin' => 'Laki-laki', // Default value
+                'alamat' => $alamat,
+                'agama' => '', // Will be filled later by admin if needed
+                'pekerjaan' => '', // Will be filled later by admin if needed
+                'status' => '', // Will be filled later by admin if needed
+                'nomor_kk' => null
+            ];
+            
+            if (!$pendudukModel->insert($pendudukData)) {
+                log_message('error', 'Penduduk insert failed: ' . json_encode($pendudukModel->errors()));
+                throw new \Exception('Gagal menyimpan data penduduk: ' . json_encode($pendudukModel->errors()));
+            }
+
             $session->setFlashdata('success', 'Akun berhasil dibuat! Silakan login dengan username dan NIK Anda sebagai password.');
             return redirect()->to('/login');
         } catch (\Exception $e) {
+            log_message('error', 'Registration error: ' . $e->getMessage());
             $session->setFlashdata('msg', 'Gagal membuat akun: ' . $e->getMessage());
             return redirect()->back()->withInput();
         }

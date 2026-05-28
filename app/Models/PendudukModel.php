@@ -12,7 +12,7 @@ class PendudukModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['nik', 'nama', 'ttl', 'jenis_kelamin', 'alamat', 'agama', 'pekerjaan', 'status', 'nomor_kk'];
+    protected $allowedFields    = ['nik', 'nama', 'ttl', 'jenis_kelamin', 'alamat', 'agama', 'pekerjaan', 'status', 'nomor_kk', 'created_at', 'updated_at'];
 
     // Dates
     protected $useTimestamps = true;
