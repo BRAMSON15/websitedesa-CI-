@@ -270,8 +270,10 @@ form {
     list-style: none;
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 1rem 1.5rem;
     padding-right: 0.8rem;
+    min-height: 0;
 }
 
 .sidebar-nav::-webkit-scrollbar {
@@ -288,6 +290,34 @@ form {
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Ensure scrollbar works on all ul elements in sidebar */
+.sidebar ul {
+    list-style: none;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1rem 1.5rem;
+    padding-right: 0.8rem;
+    min-height: 0;
+}
+
+.sidebar ul::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar ul::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar ul::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.sidebar ul::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
 }
 

@@ -59,6 +59,8 @@ $routes->post('/peta/simpanPeta', 'PetaController::simpanPeta');
 $routes->get('/profil/kelola_umum', 'ProfilController::kelola_umum');
 $routes->get('/profil/kelola_visimisi', 'ProfilController::kelola_visimisi');
 $routes->get('/profil/kelola_sejarah', 'ProfilController::kelola_sejarah');
+$routes->post('/profil/simpanVisimisi', 'ProfilController::simpanVisimisi');
+$routes->post('/profil/simpanProfil', 'ProfilController::simpanProfil');
 $routes->get('/profil/lihat', 'ProfilController::lihat');
 $routes->get('/profil/lihat_visimisi', 'ProfilController::lihat_visimisi');
 $routes->get('/profil/lihat_sejarah', 'ProfilController::lihat_sejarah');
