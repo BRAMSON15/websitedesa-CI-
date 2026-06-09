@@ -119,23 +119,32 @@ class AuthController extends BaseController
             // Insert user
             $userModel->insert($userData);
 
-            // Also insert into penduduk table
+            // Also insert into penduduk table if not exists
             $pendudukModel = new \App\Models\PendudukModel();
-            $pendudukData = [
-                'nik' => $nik,
-                'nama' => $nama,
-                'ttl' => null,
-                'jenis_kelamin' => 'Laki-laki', // Default value
-                'alamat' => $alamat,
-                'agama' => null,
-                'pekerjaan' => null,
-                'status' => null,
-                'nomor_kk' => null
-            ];
             
-            if (!$pendudukModel->insert($pendudukData)) {
-                log_message('error', 'Penduduk insert failed: ' . json_encode($pendudukModel->errors()));
-                throw new \Exception('Gagal menyimpan data penduduk: ' . json_encode($pendudukModel->errors()));
+            if (!$pendudukModel->find($nik)) {
+                $pendudukData = [
+                    'nik' => $nik,
+                    'nama' => $nama,
+                    'ttl' => null,
+                    'jenis_kelamin' => 'Laki-laki', // Default value
+                    'alamat' => $alamat,
+                    'agama' => null,
+                    'pekerjaan' => null,
+                    'status' => null,
+                    'nomor_kk' => null
+                ];
+                
+                if (!$pendudukModel->insert($pendudukData)) {
+                    log_message('error', 'Penduduk insert failed: ' . json_encode($pendudukModel->errors()));
+                    throw new \Exception('Gagal menyimpan data penduduk: ' . json_encode($pendudukModel->errors()));
+                }
+            } else {
+                // Update basic data if exists but keep their demographic data intact
+                $pendudukModel->update($nik, [
+                    'nama' => $nama,
+                    'alamat' => $alamat
+                ]);
             }
 
             $db->transComplete();

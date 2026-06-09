@@ -109,10 +109,50 @@ class PendudukController extends BaseController
             'nomor_kk' => $this->request->getPost('nomor_kk') ?: null
         ];
 
+        $db = \Config\Database::connect();
+        $db->transStart();
+
         try {
             $this->pendudukModel->insert($data);
-            return redirect()->to('/penduduk')->with('success', 'Data penduduk berhasil ditambahkan');
+
+            // Create user account automatically
+            $userModel = new \App\Models\UserModel();
+            $nama = $this->request->getPost('nama');
+            $nik = $this->request->getPost('nik');
+            
+            // Check if user already exists
+            $existingUser = $userModel->where('nik', $nik)->first();
+            if (!$existingUser) {
+                // Generate a valid username from name
+                $baseUsername = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $nama));
+                if (empty($baseUsername)) $baseUsername = 'user';
+                $username = $baseUsername;
+                $counter = 1;
+                while ($userModel->where('username', $username)->first()) {
+                    $username = $baseUsername . $counter;
+                    $counter++;
+                }
+
+                $userData = [
+                    'nama' => $nama,
+                    'nik' => $nik,
+                    'username' => $username,
+                    'password' => password_hash($nik, PASSWORD_DEFAULT),
+                    'role' => 'masyarakat',
+                    'alamat' => $this->request->getPost('alamat')
+                ];
+                $userModel->insert($userData);
+            }
+
+            $db->transComplete();
+
+            if ($db->transStatus() === false) {
+                throw new \Exception('Database transaction failed');
+            }
+
+            return redirect()->to('/penduduk')->with('success', 'Data penduduk dan akun berhasil ditambahkan');
         } catch (\Exception $e) {
+            $db->transRollback();
             return redirect()->back()->withInput()->with('error', 'Gagal menambahkan data: ' . $e->getMessage());
         }
     }
