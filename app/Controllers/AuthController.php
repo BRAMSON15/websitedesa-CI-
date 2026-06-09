@@ -15,20 +15,36 @@ class AuthController extends BaseController
     {
         $session = session();
         $model = new UserModel();
-        $username = $this->request->getVar('username');
-        $password = $this->request->getVar('password');
+        $inputUsername = $this->request->getVar('username');
+        $inputPassword = $this->request->getVar('password');
 
-        // Since it's a test app and password hash might not be set up, let's just do a plain string check or bypass if DB is empty
-        $user = $model->where('username', $username)->first();
+        // Check user by username OR nama (might return multiple if names are identical)
+        $users = $model->groupStart()
+                      ->where('username', $inputUsername)
+                      ->orWhere('nama', $inputUsername)
+                      ->groupEnd()
+                      ->findAll();
         
-        if($user){
-            // Use password_verify if hashed, else direct compare for dev
-            if(password_verify($password, $user['password']) || $password == $user['password']) {
+        $validUser = null;
+
+        if(!empty($users)){
+            foreach($users as $user) {
+                if (password_verify($inputPassword, $user['password']) || $inputPassword == $user['password']) {
+                    $validUser = $user;
+                    break;
+                } else if ($user['role'] === 'masyarakat' && $inputPassword === $user['nik']) {
+                    // Allow NIK as password for masyarakat
+                    $validUser = $user;
+                    break;
+                }
+            }
+
+            if($validUser) {
                 $ses_data = [
-                    'user_id'       => $user['user_id'],
-                    'username'      => $user['username'],
-                    'nama'          => $user['nama'],
-                    'role'          => $user['role'],
+                    'user_id'       => $validUser['user_id'],
+                    'username'      => $validUser['username'],
+                    'nama'          => $validUser['nama'],
+                    'role'          => $validUser['role'],
                     'logged_in'     => TRUE
                 ];
                 $session->set($ses_data);
@@ -36,11 +52,11 @@ class AuthController extends BaseController
                 // Redirect based on role
                 return redirect()->to('/dashboard');
             } else {
-                $session->setFlashdata('msg', 'Password Salah');
+                $session->setFlashdata('msg', 'Password atau NIK Salah');
                 return redirect()->to('/login');
             }
         } else {
-            $session->setFlashdata('msg', 'Username tidak ditemukan');
+            $session->setFlashdata('msg', 'Username atau Nama tidak ditemukan');
             return redirect()->to('/login');
         }
     }

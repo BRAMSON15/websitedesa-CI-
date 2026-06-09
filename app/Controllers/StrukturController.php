@@ -2,8 +2,17 @@
 
 namespace App\Controllers;
 
+use App\Models\StrukturDesaModel;
+
 class StrukturController extends BaseController
 {
+    protected $strukturModel;
+
+    public function __construct()
+    {
+        $this->strukturModel = new StrukturDesaModel();
+    }
+
     private function checkAuth()
     {
         $session = session();
@@ -13,30 +22,94 @@ class StrukturController extends BaseController
         return null;
     }
 
-    private function renderView($title, $role_required = null)
+    public function kelola()
     {
         $auth = $this->checkAuth();
         if($auth) return $auth;
 
         $session = session();
-        
-        // Check role if specified
-        if($role_required && $session->get('role') !== $role_required) {
-            return redirect()->to('/dashboard')->with('error', 'Akses ditolak. Anda tidak memiliki izin untuk mengakses halaman ini.');
+        if($session->get('role') !== 'admin') {
+            return redirect()->to('/dashboard')->with('error', 'Akses ditolak.');
         }
 
-        return view('dashboard/placeholder', [
+        $data = [
             'nama' => $session->get('nama'),
             'role' => $session->get('role'),
-            'page_title' => $title
-        ]);
+            'page_title' => 'Kelola Struktur Desa',
+            'struktur_list' => $this->strukturModel->findAll()
+        ];
+
+        return view('struktur/kelola', $data);
     }
 
-    public function kelola() { 
-        return $this->renderView('Kelola Struktur Desa', 'admin'); 
+    public function simpan()
+    {
+        $auth = $this->checkAuth();
+        if($auth) return $auth;
+
+        $rules = [
+            'nama' => 'required|min_length[3]|max_length[100]',
+            'jabatan' => 'required|max_length[100]',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $data = [
+            'nama' => $this->request->getPost('nama'),
+            'jabatan' => $this->request->getPost('jabatan')
+        ];
+
+        $this->strukturModel->insert($data);
+        return redirect()->to('/struktur/kelola')->with('success', 'Data struktur berhasil ditambahkan');
     }
-    
-    public function lihat() { 
-        return $this->renderView('Struktur Desa'); 
+
+    public function update($id)
+    {
+        $auth = $this->checkAuth();
+        if($auth) return $auth;
+
+        $rules = [
+            'nama' => 'required|min_length[3]|max_length[100]',
+            'jabatan' => 'required|max_length[100]',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $data = [
+            'nama' => $this->request->getPost('nama'),
+            'jabatan' => $this->request->getPost('jabatan')
+        ];
+
+        $this->strukturModel->update($id, $data);
+        return redirect()->to('/struktur/kelola')->with('success', 'Data struktur berhasil diperbarui');
+    }
+
+    public function hapus($id)
+    {
+        $auth = $this->checkAuth();
+        if($auth) return $auth;
+
+        $this->strukturModel->delete($id);
+        return redirect()->to('/struktur/kelola')->with('success', 'Data struktur berhasil dihapus');
+    }
+
+    public function lihat()
+    {
+        $auth = $this->checkAuth();
+        if($auth) return $auth;
+
+        $session = session();
+        $data = [
+            'nama' => $session->get('nama'),
+            'role' => $session->get('role'),
+            'page_title' => 'Struktur Desa',
+            'struktur_list' => $this->strukturModel->findAll()
+        ];
+
+        return view('struktur/lihat', $data);
     }
 }

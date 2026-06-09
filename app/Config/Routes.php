@@ -67,8 +67,12 @@ $routes->get('/profil/lihat_sejarah', 'ProfilController::lihat_sejarah');
 
 // Struktur Desa Routes
 $routes->get('/struktur/kelola', 'StrukturController::kelola');
+$routes->post('/struktur/simpan', 'StrukturController::simpan');
+$routes->post('/struktur/update/(:num)', 'StrukturController::update/$1');
+$routes->get('/struktur/hapus/(:num)', 'StrukturController::hapus/$1');
 $routes->get('/struktur/lihat', 'StrukturController::lihat');
 
 // User Profil Routes
 $routes->get('/user/profil', 'UserController::profil');
+$routes->post('/user/updateProfil', 'UserController::updateProfil');
 

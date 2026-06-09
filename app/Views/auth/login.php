@@ -30,17 +30,17 @@
 
             <form action="<?= base_url('/processLogin') ?>" method="post">
                 <div class="form-group">
-                    <label class="form-label" style="font-size: 0.9rem;">Username</label>
+                    <label class="form-label" style="font-size: 0.9rem;">Username / Nama Lengkap</label>
                     <div style="position: relative;">
                         <i class="ri-user-line" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
-                        <input type="text" name="username" class="form-control" style="padding-left: 2.5rem;" placeholder="Masukkan username" required>
+                        <input type="text" name="username" class="form-control" style="padding-left: 2.5rem;" placeholder="Masukkan username atau nama" required>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-label" style="font-size: 0.9rem;">Password</label>
+                    <label class="form-label" style="font-size: 0.9rem;">Password / NIK</label>
                     <div style="position: relative;">
                         <i class="ri-lock-line" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
-                        <input type="password" name="password" class="form-control" style="padding-left: 2.5rem;" placeholder="Masukkan password" required>
+                        <input type="password" name="password" class="form-control" style="padding-left: 2.5rem;" placeholder="Masukkan password atau NIK" required>
                     </div>
                 </div>
                 <div class="form-group" style="margin-top: 2.5rem;">
