@@ -121,12 +121,29 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 <script>
-    const mapDetail = L.map('mapDetail').setView([<?= $peta['koordinat_lat'] ?? '-3.4' ?>, <?= $peta['koordinat_lng'] ?? '127.1' ?>], 13);
-    
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    let osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
         maxZoom: 19
-    }).addTo(mapDetail);
+    });
+
+    let hybridLayer = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+        attribution: '© Google Maps'
+    });
+
+    const mapDetail = L.map('mapDetail', {
+        center: [<?= $peta['koordinat_lat'] ?? '-3.4' ?>, <?= $peta['koordinat_lng'] ?? '127.1' ?>],
+        zoom: 13,
+        layers: [hybridLayer]
+    });
+    
+    let baseMaps = {
+        "Satelit Hybrid": hybridLayer,
+        "Peta Biasa (OSM)": osmLayer
+    };
+
+    L.control.layers(baseMaps).addTo(mapDetail);
     
     const marker = L.marker([<?= $peta['koordinat_lat'] ?? '-3.4' ?>, <?= $peta['koordinat_lng'] ?? '127.1' ?>], {
         title: 'Desa Tifu'

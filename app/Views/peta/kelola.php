@@ -229,16 +229,34 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 <script>
-    // Initialize preview map
-    let mapPreview = L.map('mapPreview').setView([<?= $peta['koordinat_lat'] ?? '-3.4' ?>, <?= $peta['koordinat_lng'] ?? '127.1' ?>], 13);
-    
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    let osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
         maxZoom: 19
-    }).addTo(mapPreview);
+    });
+
+    let hybridLayer = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+        attribution: '© Google Maps'
+    });
+
+    // Initialize preview map
+    let mapPreview = L.map('mapPreview', {
+        center: [<?= $peta['koordinat_lat'] ?? '-3.4' ?>, <?= $peta['koordinat_lng'] ?? '127.1' ?>],
+        zoom: 13,
+        layers: [hybridLayer]
+    });
+    
+    let baseMaps = {
+        "Satelit Hybrid": hybridLayer,
+        "Peta Biasa (OSM)": osmLayer
+    };
+
+    L.control.layers(baseMaps).addTo(mapPreview);
     
     let marker = L.marker([<?= $peta['koordinat_lat'] ?? '-3.4' ?>, <?= $peta['koordinat_lng'] ?? '127.1' ?>], {
-        title: 'Desa Tifu'
+        title: 'Desa Tifu',
+        draggable: true
     }).addTo(mapPreview);
     
     marker.bindPopup(`
@@ -266,15 +284,11 @@
         e.preventDefault();
 
         const formData = new FormData(this);
-        const data = Object.fromEntries(formData);
 
         try {
             const response = await fetch('<?= base_url('/peta/simpanPeta') ?>', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
+                body: formData
             });
 
             const result = await response.json();
@@ -291,19 +305,38 @@
         }
     });
 
-    // Update map preview when coordinates change
-    document.querySelector('input[name="koordinat_lat"]').addEventListener('change', updateMapPreview);
-    document.querySelector('input[name="koordinat_lng"]').addEventListener('change', updateMapPreview);
+    const latInput = document.querySelector('input[name="koordinat_lat"]');
+    const lngInput = document.querySelector('input[name="koordinat_lng"]');
+
+    // Update map preview when coordinates change in input
+    latInput.addEventListener('input', updateMapPreview);
+    lngInput.addEventListener('input', updateMapPreview);
 
     function updateMapPreview() {
-        const lat = parseFloat(document.querySelector('input[name="koordinat_lat"]').value);
-        const lng = parseFloat(document.querySelector('input[name="koordinat_lng"]').value);
+        const lat = parseFloat(latInput.value);
+        const lng = parseFloat(lngInput.value);
 
         if(!isNaN(lat) && !isNaN(lng)) {
-            mapPreview.setView([lat, lng], 13);
+            mapPreview.setView([lat, lng], mapPreview.getZoom());
             marker.setLatLng([lat, lng]);
         }
     }
+
+    // Update inputs when marker is dragged
+    marker.on('dragend', function(e) {
+        const position = marker.getLatLng();
+        latInput.value = position.lat.toFixed(8);
+        lngInput.value = position.lng.toFixed(8);
+        mapPreview.setView(position, mapPreview.getZoom());
+    });
+
+    // Update marker and inputs when map is clicked
+    mapPreview.on('click', function(e) {
+        const position = e.latlng;
+        marker.setLatLng(position);
+        latInput.value = position.lat.toFixed(8);
+        lngInput.value = position.lng.toFixed(8);
+    });
 </script>
 
 <?= $this->endSection() ?>

@@ -159,12 +159,29 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 <script>
-    const mapProfil = L.map('mapProfil').setView([-3.4, 127.1], 12);
-    
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    let osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
         maxZoom: 19
-    }).addTo(mapProfil);
+    });
+
+    let hybridLayer = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+        attribution: '© Google Maps'
+    });
+
+    const mapProfil = L.map('mapProfil', {
+        center: [-3.4, 127.1],
+        zoom: 12,
+        layers: [hybridLayer]
+    });
+    
+    let baseMaps = {
+        "Satelit Hybrid": hybridLayer,
+        "Peta Biasa (OSM)": osmLayer
+    };
+
+    L.control.layers(baseMaps).addTo(mapProfil);
     
     const marker = L.marker([-3.4, 127.1], {
         title: 'Desa Tifu'

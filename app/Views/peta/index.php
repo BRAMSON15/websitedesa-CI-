@@ -120,14 +120,30 @@
 </style>
 
 <script>
-    // Initialize map centered on Desa Tifu, Pulau Buru
-    const map = L.map('map').setView([<?= $peta['koordinat_lat'] ?? '-3.4' ?>, <?= $peta['koordinat_lng'] ?? '127.1' ?>], 13);
-    
-    // Add OpenStreetMap tiles
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    let osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
         maxZoom: 19
-    }).addTo(map);
+    });
+
+    let hybridLayer = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+        attribution: '© Google Maps'
+    });
+
+    // Initialize map centered on Desa Tifu, Pulau Buru
+    const map = L.map('map', {
+        center: [<?= $peta['koordinat_lat'] ?? '-3.4' ?>, <?= $peta['koordinat_lng'] ?? '127.1' ?>],
+        zoom: 13,
+        layers: [hybridLayer]
+    });
+    
+    let baseMaps = {
+        "Satelit Hybrid": hybridLayer,
+        "Peta Biasa (OSM)": osmLayer
+    };
+
+    L.control.layers(baseMaps).addTo(map);
     
     // Add marker for Desa Tifu
     const marker = L.marker([<?= $peta['koordinat_lat'] ?? '-3.4' ?>, <?= $peta['koordinat_lng'] ?? '127.1' ?>], {
