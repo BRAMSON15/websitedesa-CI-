@@ -54,6 +54,12 @@
                 </div>
             </div>
 
+            <?php if(!empty($profil['gambar_sejarah'])): ?>
+            <div style="margin-bottom: 2rem;">
+                <img src="<?= base_url('uploads/sejarah/' . $profil['gambar_sejarah']) ?>" alt="Gambar Sejarah Desa" style="width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" onerror="this.style.display='none'">
+            </div>
+            <?php endif; ?>
+
             <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.05), rgba(245, 158, 11, 0.1)); padding: 2rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
                 <p style="color: var(--dark); font-size: 1rem; line-height: 1.8; margin: 0; white-space: pre-wrap;">
                     <?= $profil['sejarah'] ?? '<span style="color: #cbd5e1; font-style: italic;">Belum ada sejarah yang ditetapkan</span>' ?>

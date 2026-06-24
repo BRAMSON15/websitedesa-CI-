@@ -20,12 +20,42 @@
                     <i class="ri-history-line" style="color: var(--primary);"></i> Input Sejarah Desa
                 </h4>
 
-                <form id="formProfil">
+                <form id="formProfil" enctype="multipart/form-data">
                     <div class="form-group">
                         <label class="form-label">Sejarah Desa Tifu</label>
-                        <textarea name="sejarah" class="form-control" rows="8" placeholder="Masukkan sejarah Desa Tifu..." required><?= $profil['sejarah'] ?? '' ?></textarea>
+                        <textarea name="sejarah" class="form-control" rows="6" placeholder="Masukkan sejarah Desa Tifu..." required><?= $profil['sejarah'] ?? '' ?></textarea>
                         <small style="color: #64748b; display: block; margin-top: 0.5rem;">
                             <i class="ri-information-line"></i> Ceritakan sejarah, asal-usul, dan perkembangan Desa Tifu
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Gambar Sejarah Desa</label>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <div style="position: relative; border: 2px dashed #e2e8f0; border-radius: 6px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s; background: #f8fafc;" id="uploadArea">
+                                <input type="file" name="gambar_sejarah" id="gambarSejarah" class="form-control" style="display: none;" accept="image/*">
+                                <div id="uploadPlaceholder" style="pointer-events: none;">
+                                    <i class="ri-image-add-line" style="font-size: 2.5rem; color: var(--primary); display: block; margin-bottom: 0.5rem;"></i>
+                                    <p style="color: var(--dark); font-weight: 500; margin: 0.5rem 0;">Klik atau drag gambar ke sini</p>
+                                    <p style="color: #94a3b8; font-size: 0.85rem; margin: 0;">Format: JPG, PNG | Ukuran maks: 2MB</p>
+                                </div>
+                                <div id="uploadPreview" style="display: none; pointer-events: none;">
+                                    <img id="previewImg" style="max-width: 100%; max-height: 200px; border-radius: 4px;">
+                                    <p id="fileName" style="color: #64748b; margin-top: 0.5rem; font-size: 0.85rem;"></p>
+                                </div>
+                            </div>
+                            <?php if(!empty($profil['gambar_sejarah']) && file_exists(FCPATH . 'uploads/sejarah/' . $profil['gambar_sejarah'])): ?>
+                            <div style="background: #f0fdf4; padding: 0.75rem; border-radius: 6px; border-left: 4px solid var(--primary); display: flex; align-items: center; gap: 0.75rem;">
+                                <i class="ri-check-circle-line" style="color: var(--primary); font-size: 1.2rem;"></i>
+                                <div>
+                                    <p style="color: var(--primary); font-weight: 500; margin: 0; font-size: 0.9rem;">Gambar saat ini</p>
+                                    <p style="color: #65a30d; font-size: 0.8rem; margin: 0.2rem 0 0 0;"><?= $profil['gambar_sejarah'] ?></p>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+                        </div>
+                        <small style="color: #64748b; display: block; margin-top: 0.5rem;">
+                            <i class="ri-information-line"></i> Upload gambar untuk mengilustrasikan sejarah desa
                         </small>
                     </div>
 
@@ -150,24 +180,86 @@
 <script>
     const sejarahInput = document.querySelector('textarea[name="sejarah"]');
     const previewSejarah = document.getElementById('previewSejarah');
+    const uploadArea = document.getElementById('uploadArea');
+    const gambarInput = document.getElementById('gambarSejarah');
+    const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+    const uploadPreview = document.getElementById('uploadPreview');
+    const previewImg = document.getElementById('previewImg');
+    const fileName = document.getElementById('fileName');
 
     sejarahInput.addEventListener('input', function() {
         previewSejarah.textContent = this.value || 'Belum ada sejarah yang ditetapkan';
     });
 
+    // Upload area click handler
+    uploadArea.addEventListener('click', () => gambarInput.click());
+
+    // Drag and drop handlers
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = 'var(--primary)';
+        uploadArea.style.background = 'rgba(16, 185, 129, 0.05)';
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.style.borderColor = '#e2e8f0';
+        uploadArea.style.background = '#f8fafc';
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = '#e2e8f0';
+        uploadArea.style.background = '#f8fafc';
+        
+        const files = e.dataTransfer.files;
+        if(files.length > 0) {
+            gambarInput.files = files;
+            handleFileSelect();
+        }
+    });
+
+    // File input change handler
+    gambarInput.addEventListener('change', handleFileSelect);
+
+    function handleFileSelect() {
+        const file = gambarInput.files[0];
+        
+        if(!file) return;
+
+        // Validasi tipe file
+        if(!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
+            alert('Format file tidak didukung. Gunakan JPG atau PNG.');
+            gambarInput.value = '';
+            return;
+        }
+
+        // Validasi ukuran file (2MB)
+        if(file.size > 2 * 1024 * 1024) {
+            alert('Ukuran file terlalu besar. Maksimal 2MB.');
+            gambarInput.value = '';
+            return;
+        }
+
+        // Tampilkan preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImg.src = e.target.result;
+            fileName.textContent = file.name;
+            uploadPlaceholder.style.display = 'none';
+            uploadPreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+
     document.getElementById('formProfil').addEventListener('submit', async function(e) {
         e.preventDefault();
 
         const formData = new FormData(this);
-        const data = Object.fromEntries(formData);
 
         try {
             const response = await fetch('<?= base_url('/profil/simpanProfil') ?>', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
+                body: formData
             });
 
             const result = await response.json();

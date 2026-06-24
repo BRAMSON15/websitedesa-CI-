@@ -168,6 +168,7 @@ class ProfilController extends BaseController
         }
 
         $sejarah = $this->request->getPost('sejarah');
+        $file = $this->request->getFile('gambar_sejarah');
 
         $profil_existing = $this->profilModel->first();
 
@@ -177,6 +178,45 @@ class ProfilController extends BaseController
         ];
 
         try {
+            // Handle file upload
+            if($file && $file->isValid() && !$file->hasMoved()) {
+                // Validasi tipe file
+                $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                if(!in_array($file->getMimeType(), $allowedTypes)) {
+                    return $this->response->setJSON([
+                        'success' => false, 
+                        'message' => 'Tipe file tidak didukung. Gunakan JPG atau PNG.'
+                    ])->setStatusCode(400);
+                }
+
+                // Validasi ukuran file (2MB)
+                if($file->getSize() > 2 * 1024 * 1024) {
+                    return $this->response->setJSON([
+                        'success' => false, 
+                        'message' => 'Ukuran file terlalu besar. Maksimal 2MB.'
+                    ])->setStatusCode(400);
+                }
+
+                // Buat folder jika belum ada
+                $uploadPath = FCPATH . 'uploads/sejarah/';
+                if(!is_dir($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+
+                // Hapus file lama jika ada
+                if($profil_existing && !empty($profil_existing['gambar_sejarah'])) {
+                    $oldFile = $uploadPath . $profil_existing['gambar_sejarah'];
+                    if(file_exists($oldFile)) {
+                        unlink($oldFile);
+                    }
+                }
+
+                // Generate nama file
+                $newName = 'sejarah_' . time() . '_' . $file->getRandomName();
+                $file->move($uploadPath, $newName);
+                $data['gambar_sejarah'] = $newName;
+            }
+
             if($profil_existing) {
                 $this->profilModel->update($profil_existing['id'], $data);
                 $message = 'Profil Desa berhasil diperbarui';

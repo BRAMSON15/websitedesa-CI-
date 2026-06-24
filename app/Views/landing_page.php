@@ -11,7 +11,7 @@
         /* Mobile-first responsive design */
         .hero {
             padding-top: 80px;
-            background: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)), url('<?= base_url('img/TELUK-TIFU.jpeg') ?>');
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url('<?= base_url('img/kantordesa.jpeg') ?>');
             background-size: cover;
             background-position: center;
             min-height: 100vh;
@@ -44,7 +44,8 @@
             top: 10%; 
             right: 10%; 
             filter: blur(40px); 
-            animation: float 10s ease-in-out infinite; 
+            animation: float 10s ease-in-out infinite;
+            display: none;
         }
         
         .blob-2 { 
@@ -56,7 +57,8 @@
             bottom: 20%; 
             right: 20%; 
             filter: blur(50px); 
-            animation: float 12s ease-in-out infinite reverse; 
+            animation: float 12s ease-in-out infinite reverse;
+            display: none;
         }
         
         @keyframes float {
@@ -303,29 +305,6 @@
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container d-flex justify-content-between align-items-center">
-            <a href="<?= base_url() ?>" class="navbar-brand" style="display: flex; align-items: center; gap: 0.5rem;">
-                <div style="background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-                    <i class="ri-home-smile-fill"></i>
-                </div>
-                SIDESA
-            </a>
-            
-            <!-- Mobile menu toggle -->
-            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
-                <i class="ri-menu-line"></i>
-            </button>
-            
-            <ul class="nav-links" id="navLinks" style="display: flex; align-items: center;">
-                <li><a href="#">Beranda</a></li>
-                <li><a href="#">Berita</a></li>
-                <li><a href="#">Layanan</a></li>
-                <li><a href="<?= base_url('/login') ?>" class="btn-primary" style="color: white !important;">Masuk Sistem</a></li>
-            </ul>
-        </div>
-    </nav>
-
     <div class="hero">
         <div class="hero-graphics">
             <div class="blob-1"></div>
@@ -336,7 +315,7 @@
                 <div style="display: inline-block; padding: 0.5rem 1rem; background: rgba(15, 118, 110, 0.1); color: var(--primary); border-radius: 30px; font-weight: 600; font-size: 0.9rem; margin-bottom: 1.5rem;">
                     <i class="ri-rocket-line"></i> Inovasi Desa Digital 2026
                 </div>
-                <h1 style="font-size: 4rem; line-height: 1.1; margin-bottom: 1.5rem; color: #ffffff;">Sistem Informasi <span style="background: linear-gradient(to right, #2DD4BF, #10B981); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Desa Cerdas</span></h1>
+                <h1 style="font-size: 4rem; line-height: 1.1; margin-bottom: 1.5rem; color: #ffffff;">Sistem Informasi <span style="color: #ffffff;">Desa Tifu</span></h1>
                 <p style="font-size: 1.25rem; color: #e2e8f0; margin-bottom: 2.5rem; line-height: 1.7;">Pelayanan surat menyurat, peta administrasi, dan data penduduk kini lebih mudah, transparan, dan dapat diakses dari mana saja tanpa antri.</p>
                 <div style="display: flex; gap: 1rem;">
                     <a href="<?= base_url('/login') ?>" class="btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; background: var(--primary);">Mulai Sekarang <i class="ri-arrow-right-line"></i></a>
@@ -350,7 +329,7 @@
     <div id="fitur" class="container" style="padding: 100px 1.5rem;">
         <div style="text-align: center; margin-bottom: 4rem;">
             <h2 style="font-size: 2.5rem; color: var(--dark); margin-bottom: 1rem;">Layanan Unggulan Desa</h2>
-            <p style="color: #64748b; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Kami menghadirkan berbagai fitur digital yang memudahkan warga dalam mengurus administrasi.</p>
+            <p style="color: #64748b; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Kami menghadirkan fitur yang memudahkan warga dalam mengurus administrasi.</p>
         </div>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
