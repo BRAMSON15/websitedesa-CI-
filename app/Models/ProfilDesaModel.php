@@ -11,7 +11,7 @@ class ProfilDesaModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $protectFields    = true;
-    protected $allowedFields    = ['nama_desa', 'sejarah', 'visi', 'misi', 'logo', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['nama_desa', 'sejarah', 'gambar_sejarah', 'visi', 'misi', 'logo', 'created_at', 'updated_at'];
 
     // Dates
     protected $useTimestamps = true;

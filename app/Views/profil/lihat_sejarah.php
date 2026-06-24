@@ -55,8 +55,8 @@
             </div>
 
             <?php if(!empty($profil['gambar_sejarah'])): ?>
-            <div style="margin-bottom: 2rem;">
-                <img src="<?= base_url('uploads/sejarah/' . $profil['gambar_sejarah']) ?>" alt="Gambar Sejarah Desa" style="width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" onerror="this.style.display='none'">
+            <div style="margin-bottom: 2rem; text-align: center;">
+                <img src="<?= base_url('uploads/sejarah/' . $profil['gambar_sejarah']) ?>" alt="Gambar Sejarah Desa" style="width: 100%; max-width: 500px; max-height: 300px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" onerror="this.style.display='none'">
             </div>
             <?php endif; ?>
 
