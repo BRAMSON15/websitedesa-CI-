@@ -254,9 +254,19 @@
 
     L.control.layers(baseMaps).addTo(mapPreview);
     
+    // Custom icon to prevent broken default leaflet image
+    const customIcon = L.divIcon({
+        className: 'custom-pin',
+        html: `<div style="background-color: var(--primary); width: 24px; height: 24px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3);"></div>`,
+        iconSize: [24, 24],
+        iconAnchor: [12, 24],
+        popupAnchor: [0, -24]
+    });
+
     let marker = L.marker([<?= $peta['koordinat_lat'] ?? '-3.4' ?>, <?= $peta['koordinat_lng'] ?? '127.1' ?>], {
         title: 'Desa Tifu',
-        draggable: true
+        draggable: true,
+        icon: customIcon
     }).addTo(mapPreview);
     
     marker.bindPopup(`
