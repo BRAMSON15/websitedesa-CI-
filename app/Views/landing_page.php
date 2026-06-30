@@ -312,9 +312,9 @@
         </div>
         <div class="container" style="position: relative; z-index: 1;">
             <div style="max-width: 650px;">
-                <div style="display: inline-block; padding: 0.5rem 1rem; background: rgba(15, 118, 110, 0.1); color: var(--primary); border-radius: 30px; font-weight: 600; font-size: 0.9rem; margin-bottom: 1.5rem;">
+                <!-- <div style="display: inline-block; padding: 0.5rem 1rem; background: rgba(15, 118, 110, 0.1); color: var(--primary); border-radius: 30px; font-weight: 600; font-size: 0.9rem; margin-bottom: 1.5rem;">
                     <i class="ri-rocket-line"></i> Inovasi Desa Digital 2026
-                </div>
+                </div> -->
                 <h1 style="font-size: 4rem; line-height: 1.1; margin-bottom: 1.5rem; color: #ffffff;">Sistem Informasi <span style="color: #ffffff;">Desa Tifu</span></h1>
                 <p style="font-size: 1.25rem; color: #e2e8f0; margin-bottom: 2.5rem; line-height: 1.7;">Pelayanan surat menyurat, peta administrasi, dan data penduduk kini lebih mudah, transparan, dan dapat diakses dari mana saja tanpa antri.</p>
                 <div style="display: flex; gap: 1rem;">
