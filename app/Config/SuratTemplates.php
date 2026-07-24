@@ -93,6 +93,73 @@ Tanah tersebut adalah milik sah yang bersangkutan, tidak dalam keadaan sengketa,
 Surat keterangan jual tanah ini dibuat untuk keperluan proses jual beli tanah dan dapat dipergunakan sebagaimana mestinya.',
             'required_fields' => ['lokasi_tanah', 'luas_tanah', 'nama_pembeli'],
             'template_file' => 'SurSurat keterangan - Copy.docx'
+        ],
+
+        'Surat Keterangan Penghasilan' => [
+            'title' => 'SURAT KETERANGAN PENGHASILAN',
+            'content' => 'Adalah benar-benar penduduk desa kami yang memiliki penghasilan rata-rata sebesar {{JUMLAH_PENGHASILAN}} per bulan yang bersumber dari pekerjaan sebagai {{SUMBER_PENGHASILAN}}.
+
+Surat keterangan ini dibuat untuk keperluan {{KEPERLUAN}} dan dapat dipergunakan sebagaimana mestinya.',
+            'required_fields' => ['jumlah_penghasilan', 'sumber_penghasilan'],
+            'template_file' => 'SURAT_KETERANGAN_PENGHASILAN.docx'
+        ],
+
+        'Surat Keterangan Cerai' => [
+            'title' => 'SURAT KETERANGAN CERAI',
+            'content' => 'Adalah benar-benar penduduk desa kami yang berstatus janda/duda cerai hidup dari pernikahan sebelumnya dengan {{NAMA_MANTAN_PASANGAN}} berdasarkan putusan Pengadilan Agama Nomor {{NOMOR_PUTUSAN}} tanggal {{TANGGAL_PUTUSAN}}.
+
+Surat keterangan ini dibuat untuk keperluan {{KEPERLUAN}} dan dapat dipergunakan sebagaimana mestinya.',
+            'required_fields' => ['nama_mantan_pasangan', 'nomor_putusan', 'tanggal_putusan'],
+            'template_file' => 'SURAT_KETERANGAN_CERAI.docx'
+        ],
+
+        'Surat Keterangan Kematian' => [
+            'title' => 'SURAT KETERANGAN KEMATIAN',
+            'content' => 'Menerangkan bahwa penduduk atas nama {{NAMA_ALMARHUM}} yang beralamat di {{ALAMAT_ALMARHUM}} telah meninggal dunia pada hari {{HARI_MENINGGAL}} tanggal {{TANGGAL_MENINGGAL}} di {{TEMPAT_MENINGGAL}} disebabkan karena {{PENYEBAB_MENINGGAL}}.
+
+Surat keterangan ini dibuat berdasarkan pelaporan dari keluarga dan dipergunakan untuk keperluan administrasi pengurusan akta kematian atau hal terkait lainnya.',
+            'required_fields' => ['nama_almarhum', 'alamat_almarhum', 'hari_meninggal', 'tanggal_meninggal', 'tempat_meninggal', 'penyebab_meninggal'],
+            'template_file' => 'SURAT_KETERANGAN_KEMATIAN.docx'
+        ],
+
+        'Surat Keterangan Kelahiran' => [
+            'title' => 'SURAT KETERANGAN KELAHIRAN',
+            'content' => 'Menerangkan bahwa telah lahir seorang anak berjenis kelamin {{JENIS_KELAMIN_ANAK}} bernama {{NAMA_ANAK}} pada hari {{HARI_LAHIR}} tanggal {{TANGGAL_LAHIR}} di {{TEMPAT_LAHIR}}.
+
+Anak tersebut merupakan anak ke-{{ANAK_KE}} dari pasangan suami istri {{NAMA_AYAH}} dan {{NAMA_IBU}}.
+
+Surat keterangan ini dibuat untuk keperluan administrasi pengurusan akta kelahiran atau hal terkait lainnya.',
+            'required_fields' => ['nama_anak', 'jenis_kelamin_anak', 'hari_lahir', 'tanggal_lahir', 'tempat_lahir', 'anak_ke', 'nama_ayah', 'nama_ibu'],
+            'template_file' => 'SURAT_KETERANGAN_KELAHIRAN.docx'
+        ],
+
+        'Surat Keterangan Domisili Sementara' => [
+            'title' => 'SURAT KETERANGAN DOMISILI SEMENTARA',
+            'content' => 'Adalah benar saat ini sedang berdomisili sementara/tinggal tidak tetap di {{ALAMAT_SEMENTARA}} dengan tujuan {{TUJUAN_TINGGAL}}.
+
+Surat keterangan domisili sementara ini berlaku selama {{MASA_BERLAKU}} terhitung sejak surat ini dikeluarkan, dan dibuat untuk keperluan {{KEPERLUAN}}.',
+            'required_fields' => ['alamat_sementara', 'tujuan_tinggal', 'masa_berlaku'],
+            'template_file' => 'SURAT_KETERANGAN_DOMISILI_SEMENTARA.docx'
+        ],
+
+        'Surat Keterangan Pindah Domisili' => [
+            'title' => 'SURAT KETERANGAN PINDAH DOMISILI',
+            'content' => 'Adalah benar-benar penduduk desa kami yang bermaksud pindah domisili/tempat tinggal dengan alasan {{ALASAN_PINDAH}}.
+
+Adapun alamat domisili yang baru berlokasi di {{ALAMAT_TUJUAN_PINDAH}}.
+
+Surat pengantar ini dibuat sebagai kelengkapan administrasi pengurusan pindah penduduk antar desa/kecamatan/kabupaten/provinsi.',
+            'required_fields' => ['alasan_pindah', 'alamat_tujuan_pindah'],
+            'template_file' => 'SURAT_KETERANGAN_PINDAH_DOMISILI.docx'
+        ],
+
+        'Surat Keterangan Ahli Waris' => [
+            'title' => 'SURAT KETERANGAN AHLI WARIS',
+            'content' => 'Berdasarkan pernyataan dan saksi-saksi, menerangkan bahwa pihak-pihak yang namanya tercantum dalam pernyataan pengajuan surat ini adalah benar ahli waris yang sah dari Almarhum/Almarhumah {{NAMA_PEWARIS}} yang telah meninggal dunia pada tanggal {{TANGGAL_MENINGGAL_PEWARIS}}.
+
+Surat keterangan ini dibuat untuk keperluan pengurusan harta warisan dan administrasi terkait yang diperlukan.',
+            'required_fields' => ['nama_pewaris', 'tanggal_meninggal_pewaris'],
+            'template_file' => 'SURAT_KETERANGAN_AHLI_WARIS.docx'
         ]
     ];
 

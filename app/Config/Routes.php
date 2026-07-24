@@ -46,6 +46,12 @@ $routes->get('/template', 'TemplateController::index');
 $routes->get('/template/edit/(:any)', 'TemplateController::edit/$1');
 $routes->get('/template/preview/(:any)', 'TemplateController::preview/$1');
 
+// Jenis Surat Routes
+$routes->get('/jenis-surat/kelola', 'JenisSuratController::index');
+$routes->post('/jenis-surat/simpan', 'JenisSuratController::simpan');
+$routes->post('/jenis-surat/update/(:num)', 'JenisSuratController::update/$1');
+$routes->get('/jenis-surat/hapus/(:num)', 'JenisSuratController::hapus/$1');
+
 // Peta Routes
 $routes->get('/peta', 'PetaController::index');
 $routes->get('/peta/detail', 'PetaController::detail');
@@ -63,7 +69,7 @@ $routes->post('/profil/simpanVisimisi', 'ProfilController::simpanVisimisi');
 $routes->post('/profil/simpanProfil', 'ProfilController::simpanProfil');
 $routes->get('/profil/lihat', 'ProfilController::lihat');
 $routes->get('/profil/lihat_visimisi', 'ProfilController::lihat_visimisi');
-$routes->get('/profil/lihat_sejarah', 'ProfilController::lihat_sejarah');
+
 
 // Struktur Desa Routes
 $routes->get('/struktur/kelola', 'StrukturController::kelola');

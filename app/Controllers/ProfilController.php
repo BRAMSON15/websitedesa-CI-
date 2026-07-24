@@ -103,20 +103,7 @@ class ProfilController extends BaseController
         ]);
     }
     
-    public function lihat_sejarah() 
-    { 
-        $auth = $this->checkAuth();
-        if($auth) return $auth;
 
-        $session = session();
-        $profil = $this->profilModel->first();
-
-        return view('profil/lihat_sejarah', [
-            'nama' => $session->get('nama'),
-            'role' => $session->get('role'),
-            'profil' => $profil
-        ]);
-    }
 
     public function simpanVisimisi()
     {

@@ -17,7 +17,7 @@
             <li><a href="<?= base_url('/profil/lihat') ?>" class="active"><i class="ri-information-line" style="margin-right: 10px; font-size: 1.2rem;"></i> Profil Desa</a></li>
             <li><a href="<?= base_url('/struktur/lihat') ?>"><i class="ri-organization-chart" style="margin-right: 10px; font-size: 1.2rem;"></i> Struktur Desa</a></li>
             <li><a href="<?= base_url('/profil/lihat_visimisi') ?>"><i class="ri-focus-2-line" style="margin-right: 10px; font-size: 1.2rem;"></i> Visi & Misi</a></li>
-            <li><a href="<?= base_url('/profil/lihat_sejarah') ?>"><i class="ri-history-line" style="margin-right: 10px; font-size: 1.2rem;"></i> Sejarah Desa</a></li>
+
             <li style="margin: 0.5rem 0;"><hr style="border-top: 1px solid #e2e8f0; opacity: 0.5;"></li>
             <li><a href="<?= base_url('/surat/ajukan') ?>"><i class="ri-send-plane-line" style="margin-right: 10px; font-size: 1.2rem;"></i> Ajukan Surat</a></li>
             <li><a href="<?= base_url('/surat/status') ?>"><i class="ri-file-search-line" style="margin-right: 10px; font-size: 1.2rem;"></i> Status Pengajuan</a></li>
@@ -96,6 +96,28 @@
             </div>
         </div>
 
+        <div class="card" style="margin-bottom: 2rem;">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white;">
+                    <i class="ri-history-line" style="font-size: 1.5rem;"></i>
+                </div>
+                <div>
+                    <h4 style="color: var(--dark); margin: 0; font-size: 1.1rem;">Sejarah Desa</h4>
+                    <p style="color: #64748b; font-size: 0.9rem; margin: 0.3rem 0 0 0;">Latar belakang dan perkembangan desa</p>
+                </div>
+            </div>
+
+            <?php if(!empty($profil['gambar_sejarah'])): ?>
+            <div style="margin-bottom: 1.5rem; text-align: center;">
+                <img src="<?= base_url('uploads/sejarah/' . $profil['gambar_sejarah']) ?>" alt="Gambar Sejarah Desa" style="width: 100%; max-width: 400px; max-height: 250px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" onerror="this.style.display='none'">
+            </div>
+            <?php endif; ?>
+
+            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                <p style="color: var(--dark); font-size: 0.95rem; line-height: 1.8; margin: 0; white-space: pre-wrap;"><?= $profil['sejarah'] ?? '<span style="color: #cbd5e1; font-style: italic;">Belum ada sejarah yang ditetapkan</span>' ?></p>
+            </div>
+        </div>
+
         <div class="card">
             <h4 style="color: var(--dark); margin-bottom: 1.5rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
                 <i class="ri-links-line" style="color: var(--primary);"></i> Navigasi Cepat
@@ -112,15 +134,7 @@
                     </div>
                 </a>
 
-                <a href="<?= base_url('/profil/lihat_sejarah') ?>" style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05)); border-radius: 8px; text-decoration: none; transition: all 0.3s; border: 1px solid rgba(245, 158, 11, 0.2);" onmouseover="this.style.background='linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1))'" onmouseout="this.style.background='linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05))'">
-                    <div style="width: 40px; height: 40px; background: #f59e0b; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
-                        <i class="ri-history-line"></i>
-                    </div>
-                    <div>
-                        <p style="color: var(--dark); font-weight: 600; margin: 0; font-size: 0.95rem;">Sejarah Desa</p>
-                        <p style="color: #64748b; font-size: 0.85rem; margin: 0.3rem 0 0 0;">Latar belakang</p>
-                    </div>
-                </a>
+
 
                 <a href="<?= base_url('/struktur/lihat') ?>" style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05)); border-radius: 8px; text-decoration: none; transition: all 0.3s; border: 1px solid rgba(139, 92, 246, 0.2);" onmouseover="this.style.background='linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.1))'" onmouseout="this.style.background='linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05))'">
                     <div style="width: 40px; height: 40px; background: #8b5cf6; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
