@@ -385,7 +385,7 @@ class SuratController extends BaseController
             $dataPengajuan = json_decode($surat['data_pengajuan'], true);
             
             // Siapkan data untuk PDF
-            $pdfData = [
+            $pdfData = array_merge($dataPengajuan, [
                 'nomor_surat' => $this->generateNomorSurat($surat),
                 'nama' => $surat['nama_pemohon'],
                 'nik' => $dataPengajuan['nik'] ?? '',
@@ -396,7 +396,7 @@ class SuratController extends BaseController
                 'alamat' => $dataPengajuan['alamat'] ?? '',
                 'keperluan' => $this->generateKeperluan($surat['nama_surat'], $dataPengajuan),
                 'tanggal_surat' => date('Y-m-d')
-            ];
+            ]);
 
             // Generate PDF
             $pdfGenerator = new PdfGenerator();
@@ -404,7 +404,12 @@ class SuratController extends BaseController
             
             // Output PDF
             $filename = 'Surat_' . str_replace(' ', '_', $surat['nama_surat']) . '_' . $surat['nama_pemohon'] . '.pdf';
-            $pdf->Output($filename, 'D'); // 'D' untuk download
+            $pdfContent = $pdf->Output($filename, 'S');
+            
+            return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+                ->setBody($pdfContent);
             
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal generate PDF: ' . $e->getMessage());
@@ -446,7 +451,7 @@ class SuratController extends BaseController
             $dataPengajuan = json_decode($surat['data_pengajuan'], true);
             
             // Siapkan data untuk PDF
-            $pdfData = [
+            $pdfData = array_merge($dataPengajuan, [
                 'nomor_surat' => $this->generateNomorSurat($surat),
                 'nama' => $surat['nama_pemohon'],
                 'nik' => $dataPengajuan['nik'] ?? '',
@@ -457,7 +462,7 @@ class SuratController extends BaseController
                 'alamat' => $dataPengajuan['alamat'] ?? '',
                 'keperluan' => $this->generateKeperluan($surat['nama_surat'], $dataPengajuan),
                 'tanggal_surat' => date('Y-m-d')
-            ];
+            ]);
 
             // Generate PDF
             $pdfGenerator = new PdfGenerator();
@@ -465,7 +470,12 @@ class SuratController extends BaseController
             
             // Output PDF untuk preview di browser
             $filename = 'Preview_Surat_' . str_replace(' ', '_', $surat['nama_surat']) . '.pdf';
-            $pdf->Output($filename, 'I'); // 'I' untuk inline preview
+            $pdfContent = $pdf->Output($filename, 'S');
+            
+            return $this->response
+                ->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
+                ->setBody($pdfContent);
             
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal preview PDF: ' . $e->getMessage());

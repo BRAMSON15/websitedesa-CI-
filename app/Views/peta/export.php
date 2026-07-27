@@ -179,16 +179,16 @@
                     </tr>
                     <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Koordinat</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;">${<?= $peta['koordinat_lat'] ?? '-3.4' ?>}° S, ${<?= $peta['koordinat_lng'] ?? '127.1' ?>}° E</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?= $peta['koordinat_lat'] ?? '-3.4' ?>° S, <?= $peta['koordinat_lng'] ?? '127.1' ?>° E</td>
                     </tr>
                     <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Luas Wilayah</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;">${<?= $peta['luas_wilayah'] ?? 'Belum diisi' ?>}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?= htmlspecialchars($peta['luas_wilayah'] ?? 'Belum diisi') ?></td>
                     </tr>
                 </table>
 
                 <h2 style="margin-top: 20px; margin-bottom: 10px;">Deskripsi</h2>
-                <p>${<?= $peta['deskripsi'] ?? 'Tidak ada deskripsi' ?>}</p>
+                <p><?= nl2br(htmlspecialchars($peta['deskripsi'] ?? 'Tidak ada deskripsi')) ?></p>
 
                 <p style="margin-top: 30px; text-align: center; color: #666; font-size: 12px;">
                     Dokumen ini dihasilkan dari Sistem Informasi Desa (SIDESA) pada ${new Date().toLocaleDateString('id-ID')}
@@ -215,11 +215,11 @@
             ['Nama Desa', 'Desa Tifu'],
             ['Pulau', 'Pulau Buru'],
             ['Provinsi', 'Maluku'],
-            ['Koordinat', '<?= $peta['koordinat_lat'] ?? '-3.4' ?>° S, <?= $peta['koordinat_lng'] ?? '127.1' ?>° E'],
-            ['Luas Wilayah', '<?= $peta['luas_wilayah'] ?? 'Belum diisi' ?>'],
+            ['Koordinat', <?= json_encode(($peta['koordinat_lat'] ?? '-3.4') . '° S, ' . ($peta['koordinat_lng'] ?? '127.1') . '° E') ?>],
+            ['Luas Wilayah', <?= json_encode($peta['luas_wilayah'] ?? 'Belum diisi') ?>],
             [],
             ['Deskripsi'],
-            ['<?= $peta['deskripsi'] ?? 'Tidak ada deskripsi' ?>']
+            [<?= json_encode($peta['deskripsi'] ?? 'Tidak ada deskripsi') ?>]
         ];
 
         let csv = data.map(row => row.join(',')).join('\n');
@@ -238,9 +238,9 @@
                 {
                     type: 'Feature',
                     properties: {
-                        name: '<?= $peta['judul_peta'] ?? 'Peta Administrasi Desa Tifu' ?>',
-                        description: '<?= $peta['deskripsi'] ?? 'Peta wilayah administrasi Desa Tifu' ?>',
-                        area: '<?= $peta['luas_wilayah'] ?? 'Belum diisi' ?>'
+                        name: <?= json_encode($peta['judul_peta'] ?? 'Peta Administrasi Desa Tifu') ?>,
+                        description: <?= json_encode($peta['deskripsi'] ?? 'Peta wilayah administrasi Desa Tifu') ?>,
+                        area: <?= json_encode($peta['luas_wilayah'] ?? 'Belum diisi') ?>
                     },
                     geometry: {
                         type: 'Point',

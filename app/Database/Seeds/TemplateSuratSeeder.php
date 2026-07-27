@@ -76,7 +76,7 @@ class TemplateSuratSeeder extends Seeder
         
         <div class="signature">
             <p>Tifu, {{TANGGAL_SURAT}}</p>
-            <p>Plt Kepala Desa Tifu,</p>
+            <p>PJS Kepala Desa Tifu,</p>
             <br><br><br>
             <p><u>NIKLAS SALASIWA</u></p>
             <p>NIP 197005122014121004</p>

@@ -54,7 +54,7 @@
                 <p style="color: #64748b; font-size: 0.95rem;">Peta wilayah administrasi Desa Tifu, Pulau Buru</p>
             </div>
             <div style="display: flex; gap: 1rem; align-items: center;">
-                <a href="<?= base_url('/peta/galeri') ?>" class="btn-outline" style="padding: 0.5rem 1rem; border-color: #e2e8f0; display: flex; align-items: center; gap: 0.5rem;"><i class="ri-gallery-line"></i> Galeri</a>
+                <!-- <a href="<?= base_url('/peta/galeri') ?>" class="btn-outline" style="padding: 0.5rem 1rem; border-color: #e2e8f0; display: flex; align-items: center; gap: 0.5rem;"><i class="ri-gallery-line"></i> Galeri</a> -->
                 <a href="<?= base_url('/peta/export') ?>" class="btn-outline" style="padding: 0.5rem 1rem; border-color: #e2e8f0; display: flex; align-items: center; gap: 0.5rem;"><i class="ri-download-line"></i> Export</a>
                 <a href="<?= base_url('/peta/statistik') ?>" class="btn-outline" style="padding: 0.5rem 1rem; border-color: #e2e8f0; display: flex; align-items: center; gap: 0.5rem;"><i class="ri-bar-chart-line"></i> Statistik</a>
                 <a href="<?= base_url('/peta/detail') ?>" class="btn-outline" style="padding: 0.5rem 1rem; border-color: #e2e8f0; display: flex; align-items: center; gap: 0.5rem;"><i class="ri-info-line"></i> Detail</a>

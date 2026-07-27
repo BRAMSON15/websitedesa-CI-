@@ -153,15 +153,10 @@
         e.preventDefault();
 
         const formData = new FormData(this);
-        const data = Object.fromEntries(formData);
-
         try {
             const response = await fetch('<?= base_url('/profil/simpanVisimisi') ?>', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
+                body: formData
             });
 
             const result = await response.json();

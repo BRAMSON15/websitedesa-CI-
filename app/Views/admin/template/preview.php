@@ -130,7 +130,7 @@
                 <!-- Signature -->
                 <div style="text-align: right; margin-top: 2rem;">
                     <p style="margin: 0;">Tifu, <?= date('d F Y') ?></p>
-                    <p style="margin: 0.5rem 0;">Plt Kepala Desa Tifu,</p>
+                    <p style="margin: 0.5rem 0;">PJS Kepala Desa Tifu,</p>
                     <div style="height: 60px;"></div>
                     <p style="margin: 0; font-weight: bold; text-decoration: underline;">NIKLAS SALASIWA</p>
                     <p style="margin: 0;">NIP 197005122014121004</p>

@@ -40,9 +40,25 @@
                     <label class="form-label" style="font-size: 0.9rem;">Password / NIK</label>
                     <div style="position: relative;">
                         <i class="ri-lock-line" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
-                        <input type="password" name="password" class="form-control" style="padding-left: 2.5rem;" placeholder="Masukkan password atau NIK" required>
+                        <input type="password" id="loginPassword" name="password" class="form-control" style="padding-left: 2.5rem; padding-right: 2.5rem;" placeholder="Masukkan password atau NIK" required>
+                        <i class="ri-eye-off-line toggle-password" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8; cursor: pointer; padding: 5px;"></i>
                     </div>
                 </div>
+
+                <script>
+                    document.querySelector('.toggle-password').addEventListener('click', function (e) {
+                        const passwordInput = document.getElementById('loginPassword');
+                        if (passwordInput.type === 'password') {
+                            passwordInput.type = 'text';
+                            this.classList.remove('ri-eye-off-line');
+                            this.classList.add('ri-eye-line');
+                        } else {
+                            passwordInput.type = 'password';
+                            this.classList.remove('ri-eye-line');
+                            this.classList.add('ri-eye-off-line');
+                        }
+                    });
+                </script>
                 <div class="form-group" style="margin-top: 2.5rem;">
                     <button type="submit" class="btn-primary" style="width: 100%; font-size: 1rem; padding: 0.8rem; display: flex; justify-content: center; align-items: center; gap: 0.5rem;">
                         Masuk Portal <i class="ri-arrow-right-line"></i>
