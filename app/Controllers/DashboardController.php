@@ -62,6 +62,9 @@ class DashboardController extends BaseController
             $data['surat_ditolak'] = $suratModel->where('user_id', $userId)
                 ->where('status_surat', 'Ditolak')
                 ->countAllResults();
+                
+            $profilModel = new \App\Models\ProfilDesaModel();
+            $data['profil'] = $profilModel->first();
             
             return view('dashboard/masyarakat', $data);
         }

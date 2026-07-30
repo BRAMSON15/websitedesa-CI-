@@ -325,6 +325,32 @@
         </div>
     </div>
 
+    <!-- Visi Misi Section -->
+    <div id="visimisi" class="container" style="padding: 100px 1.5rem 0;">
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <h2 style="font-size: 2.5rem; color: var(--dark); margin-bottom: 1rem;">Visi & Misi Desa</h2>
+            <p style="color: #64748b; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Arah dan tujuan pembangunan untuk masa depan yang lebih baik.</p>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div class="glass" style="padding: 2.5rem; border-top: 4px solid var(--primary); transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
+                <div style="width: 70px; height: 70px; background: rgba(15, 118, 110, 0.1); color: var(--primary); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 1.5rem;">
+                    <i class="ri-focus-2-line"></i>
+                </div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Visi</h3>
+                <p style="color: #64748b; line-height: 1.7;"><?= nl2br(esc($profil['visi'] ?? 'Belum ada visi')) ?></p>
+            </div>
+            
+            <div class="glass" style="padding: 2.5rem; border-top: 4px solid #f59e0b; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
+                <div style="width: 70px; height: 70px; background: rgba(245, 158, 11, 0.1); color: #f59e0b; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 1.5rem;">
+                    <i class="ri-list-check-2"></i>
+                </div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Misi</h3>
+                <p style="color: #64748b; line-height: 1.7;"><?= nl2br(esc($profil['misi'] ?? 'Belum ada misi')) ?></p>
+            </div>
+        </div>
+    </div>
+
     <!-- Features section summary -->
     <div id="fitur" class="container" style="padding: 100px 1.5rem;">
         <div style="text-align: center; margin-bottom: 4rem;">
