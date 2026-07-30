@@ -44,12 +44,29 @@
                                     <p id="fileName" style="color: #64748b; margin-top: 0.5rem; font-size: 0.85rem;"></p>
                                 </div>
                             </div>
+                            
                             <?php if(!empty($profil['gambar_sejarah']) && file_exists(FCPATH . 'uploads/sejarah/' . $profil['gambar_sejarah'])): ?>
-                            <div style="background: #f0fdf4; padding: 0.75rem; border-radius: 6px; border-left: 4px solid var(--primary); display: flex; align-items: center; gap: 0.75rem;">
-                                <i class="ri-check-circle-line" style="color: var(--primary); font-size: 1.2rem;"></i>
-                                <div>
-                                    <p style="color: var(--primary); font-weight: 500; margin: 0; font-size: 0.9rem;">Gambar saat ini</p>
-                                    <p style="color: #65a30d; font-size: 0.8rem; margin: 0.2rem 0 0 0;"><?= $profil['gambar_sejarah'] ?></p>
+                            <div style="background: #f0fdf4; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary);">
+                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                    <i class="ri-image-2-line" style="color: var(--primary); font-size: 1.2rem;"></i>
+                                    <p style="color: var(--primary); font-weight: 600; margin: 0; font-size: 0.95rem;">Gambar yang Diupload</p>
+                                </div>
+                                
+                                <div style="text-align: center; margin-bottom: 1rem;">
+                                    <img src="<?= base_url('uploads/sejarah/' . $profil['gambar_sejarah']) ?>" alt="Preview Gambar Sejarah" style="max-width: 100%; max-height: 250px; object-fit: cover; border-radius: 6px;" onerror="this.style.display='none'">
+                                </div>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.85rem;">
+                                    <div>
+                                        <p style="color: #64748b; margin: 0 0 0.3rem 0;"><strong>Nama File:</strong></p>
+                                        <p style="color: #65a30d; font-family: monospace; margin: 0;"><?= $profil['gambar_sejarah'] ?></p>
+                                    </div>
+                                    <div>
+                                        <p style="color: #64748b; margin: 0 0 0.3rem 0;"><strong>Status:</strong></p>
+                                        <p style="color: #65a30d; margin: 0; display: inline-flex; align-items: center; gap: 0.3rem;">
+                                            <i class="ri-check-circle-fill"></i> Sudah Diupload
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                             <?php endif; ?>

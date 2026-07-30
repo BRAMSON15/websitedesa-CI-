@@ -43,30 +43,32 @@
             </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+        <div style="margin-bottom: 2rem;">
             <div class="card">
                 <h4 style="color: var(--dark); margin-bottom: 1.5rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
                     <i class="ri-home-smile-line" style="color: var(--primary);"></i> Informasi Desa
                 </h4>
 
-                <div style="margin-bottom: 1.5rem;">
-                    <p style="color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Nama Desa</p>
-                    <p style="color: var(--dark); font-weight: 600; font-size: 1rem;">Desa Tifu</p>
-                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <p style="color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Nama Desa</p>
+                        <p style="color: var(--dark); font-weight: 600; font-size: 1rem;">Desa Tifu</p>
+                    </div>
 
-                <div style="margin-bottom: 1.5rem;">
-                    <p style="color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Pulau</p>
-                    <p style="color: var(--dark); font-weight: 600; font-size: 1rem;">Pulau Buru</p>
-                </div>
+                    <div>
+                        <p style="color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Pulau</p>
+                        <p style="color: var(--dark); font-weight: 600; font-size: 1rem;">Pulau Buru</p>
+                    </div>
 
-                <div style="margin-bottom: 1.5rem;">
-                    <p style="color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Provinsi</p>
-                    <p style="color: var(--dark); font-weight: 600; font-size: 1rem;">Maluku</p>
-                </div>
+                    <div>
+                        <p style="color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Provinsi</p>
+                        <p style="color: var(--dark); font-weight: 600; font-size: 1rem;">Maluku</p>
+                    </div>
 
-                <div style="margin-bottom: 1.5rem;">
-                    <p style="color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Negara</p>
-                    <p style="color: var(--dark); font-weight: 600; font-size: 1rem;">Indonesia</p>
+                    <div>
+                        <p style="color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Negara</p>
+                        <p style="color: var(--dark); font-weight: 600; font-size: 1rem;">Indonesia</p>
+                    </div>
                 </div>
 
                 <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 1.5rem 0;">
@@ -74,23 +76,6 @@
                 <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary);">
                     <p style="color: #0369a1; font-size: 0.9rem; margin: 0;">
                         <i class="ri-information-line"></i> Desa Tifu adalah desa yang terletak di Pulau Buru dengan potensi alam yang kaya dan masyarakat yang dinamis.
-                    </p>
-                </div>
-            </div>
-
-            <div class="card">
-                <h4 style="color: var(--dark); margin-bottom: 1.5rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
-                    <i class="ri-map-pin-line" style="color: var(--primary);"></i> Lokasi Geografis
-                </h4>
-
-                <div id="mapProfil" style="width: 100%; height: 300px; border-radius: 8px; overflow: hidden; margin-bottom: 1.5rem;"></div>
-
-                <div style="background: #f1f5f9; padding: 1rem; border-radius: 8px;">
-                    <p style="color: #64748b; font-size: 0.85rem; margin: 0 0 0.5rem 0;">
-                        <strong>Koordinat:</strong> -3.4° S, 127.1° E
-                    </p>
-                    <p style="color: #64748b; font-size: 0.85rem; margin: 0;">
-                        <strong>Zona Waktu:</strong> WIT (UTC+9)
                     </p>
                 </div>
             </div>

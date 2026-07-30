@@ -65,11 +65,10 @@
                 </a>
             </div>
 
-            <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
-                <h5 style="color: #b45309; margin-top: 0; margin-bottom: 0.5rem;"><i class="ri-information-line"></i> Informasi</h5>
-                <p style="color: #92400e; margin: 0; font-size: 0.95rem;">
-                    Saat ini fitur modifikasi template dinamis langsung dari antarmuka sedang dalam tahap pengembangan. 
-                    Data ini dibaca dari file konfigurasi <code>app/Config/SuratTemplates.php</code> dan file dokumen word di folder <code>app/foldertemplate/</code>.
+            <div style="background: #f0fdf4; border-left: 4px solid var(--primary); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <h5 style="color: var(--primary); margin-top: 0; margin-bottom: 0.5rem;"><i class="ri-information-line"></i> Informasi</h5>
+                <p style="color: #166534; margin: 0; font-size: 0.95rem;">
+                    Anda dapat mengedit template surat langsung dari form di bawah. Gunakan variabel placeholder ({{VARIABLE}}) untuk menambahkan data dinamis yang akan diganti otomatis saat surat dibuat.
                 </p>
             </div>
 
@@ -83,27 +82,33 @@
 
                 <div class="form-group" style="margin-bottom: 1.5rem;">
                     <label style="display: block; margin-bottom: 0.5rem; color: #475569; font-weight: 500;">Isi Template</label>
-                    <textarea class="form-control" rows="15" disabled style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 8px; background: #f8fafc; color: #64748b; cursor: not-allowed; line-height: 1.6; font-family: monospace;"><?= esc($template['content'] ?? '') ?></textarea>
+                    <textarea name="content" class="form-control" rows="15" style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 8px; color: #475569; line-height: 1.6; font-family: monospace;" required><?= esc($template['content'] ?? '') ?></textarea>
+                    <small style="color: #64748b; display: block; margin-top: 0.5rem;">
+                        <i class="ri-information-line"></i> Edit konten template dan gunakan variabel di bawah untuk placeholder dinamis
+                    </small>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 1.5rem;">
                     <label style="display: block; margin-bottom: 0.5rem; color: #475569; font-weight: 500;">Parameter Dinamis Tersedia (Variabel):</label>
                     <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">{{NAMA}}</span>
-                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">{{NIK}}</span>
-                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">{{ALAMAT}}</span>
-                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">{{KEPERLUAN}}</span>
+                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">(.........................................................)</span>
+                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">(.........................................................)</span>
+                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">(.........................................................)</span>
+                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">(.........................................................)</span>
                         <?php if(isset($template['required_fields']) && is_array($template['required_fields'])): ?>
                             <?php foreach($template['required_fields'] as $field): ?>
-                                <span style="background: #dcfce7; color: #166534; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">{{<?= strtoupper($field) ?>}}</span>
+                                <span style="background: #dcfce7; color: #166534; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">(.........................................................)</span>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
                 </div>
 
                 <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
-                    <button type="button" class="btn-primary" disabled style="opacity: 0.6; cursor: not-allowed; padding: 0.8rem 2rem;">
-                        <i class="ri-save-line"></i> Simpan Perubahan (Segera Hadir)
+                    <a href="<?= base_url('/template/preview/' . urlencode($letter_type)) ?>" class="btn-outline" style="text-decoration: none; padding: 0.8rem 2rem; border: 1px solid #cbd5e1; color: #64748b;">
+                        <i class="ri-eye-line"></i> Preview
+                    </a>
+                    <button type="submit" class="btn-primary" style="padding: 0.8rem 2rem;">
+                        <i class="ri-save-line"></i> Simpan Perubahan
                     </button>
                 </div>
             </form>

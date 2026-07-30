@@ -27,12 +27,12 @@ class PdfGenerator
         $this->pdf->setPrintHeader(false);
         $this->pdf->setPrintFooter(false);
         
-        // Set margins
-        $this->pdf->SetMargins(20, 20, 20);
-        $this->pdf->SetAutoPageBreak(TRUE, 20);
+        // Set margins - reduced to fit content in 1 page
+        $this->pdf->SetMargins(15, 15, 15);
+        $this->pdf->SetAutoPageBreak(FALSE); // Disable auto page break
         
         // Set font
-        $this->pdf->SetFont('times', '', 12);
+        $this->pdf->SetFont('times', '', 11);
     }
     
     public function generateSuratKeterangan($data, $letterType = null)
@@ -57,23 +57,22 @@ class PdfGenerator
         // Logo (if exists)
         $logoPath = FCPATH . 'logo/image.png';
         if (file_exists($logoPath)) {
-            $this->pdf->Image($logoPath, 25, 25, 25, 25, 'PNG');
+            $this->pdf->Image($logoPath, 18, 15, 20, 20, 'PNG');
         }
         
         // Header text
-        $this->pdf->SetFont('times', 'B', 14);
-        $this->pdf->Cell(0, 7, 'PEMERINTAH KABUPATEN BURU', 0, 1, 'C');
-        $this->pdf->Cell(0, 7, 'KECAMATAN LOLONG GUBA', 0, 1, 'C');
-        $this->pdf->Cell(0, 7, 'DESA TIFU', 0, 1, 'C');
+        $this->pdf->SetFont('times', 'B', 12);
+        $this->pdf->Cell(0, 5, 'PEMERINTAH KABUPATEN BURU', 0, 1, 'C');
+        $this->pdf->Cell(0, 5, 'KECAMATAN LOLONG GUBA', 0, 1, 'C');
+        $this->pdf->Cell(0, 5, 'DESA TIFU', 0, 1, 'C');
         
-        $this->pdf->SetFont('times', '', 10);
-        $this->pdf->Cell(0, 5, 'Alamat: Jalan Inaboti No 01 Telep ___Code Pos: 97574', 0, 1, 'C');
+        $this->pdf->SetFont('times', '', 9);
+        $this->pdf->Cell(0, 4, 'Alamat: Jalan Inaboti No 01 Telep ___Code Pos: 97574', 0, 1, 'C');
         
         // Line separator
+        $this->pdf->Ln(2);
+        $this->pdf->Line(15, $this->pdf->GetY(), 195, $this->pdf->GetY());
         $this->pdf->Ln(3);
-        $this->pdf->Line(20, $this->pdf->GetY(), 190, $this->pdf->GetY());
-        $this->pdf->Line(20, $this->pdf->GetY() + 1, 190, $this->pdf->GetY() + 1);
-        $this->pdf->Ln(6);
     }
     
     private function addContent($data, $letterType = null)
@@ -85,68 +84,68 @@ class PdfGenerator
         }
         
         // Title
-        $this->pdf->SetFont('times', 'BU', 14);
+        $this->pdf->SetFont('times', 'BU', 12);
         $title = $template ? $template['title'] : 'SURAT KETERANGAN';
-        $this->pdf->Cell(0, 8, $title, 0, 1, 'C');
+        $this->pdf->Cell(0, 5, $title, 0, 1, 'C');
         
         // Nomor surat
-        $this->pdf->SetFont('times', '', 12);
+        $this->pdf->SetFont('times', '', 10);
         $nomor = 'Nomor: ' . ($data['nomor_surat'] ?? '140 /18 / DT / II / 2026');
-        $this->pdf->Cell(0, 6, $nomor, 0, 1, 'C');
-        $this->pdf->Ln(6);
+        $this->pdf->Cell(0, 4, $nomor, 0, 1, 'C');
+        $this->pdf->Ln(3);
         
         // Content
-        $this->pdf->SetFont('times', '', 12);
-        $this->pdf->Cell(0, 6, 'Yang bertanda tangan dibawah ini:', 0, 1, 'L');
-        $this->pdf->Ln(2);
+        $this->pdf->SetFont('times', '', 10);
+        $this->pdf->Cell(0, 4, 'Yang bertanda tangan dibawah ini:', 0, 1, 'L');
+        $this->pdf->Ln(1);
         
         // Kepala Desa info
-        $this->pdf->Cell(35, 6, 'Nama', 0, 0, 'L');
-        $this->pdf->Cell(5, 6, ':', 0, 0, 'L');
-        $this->pdf->Cell(0, 6, 'NIKLAS SALASIWA', 0, 1, 'L');
+        $this->pdf->Cell(30, 4, 'Nama', 0, 0, 'L');
+        $this->pdf->Cell(4, 4, ':', 0, 0, 'L');
+        $this->pdf->Cell(0, 4, 'NIKLAS SALASIWA', 0, 1, 'L');
         
-        $this->pdf->Cell(35, 6, 'Jabatan', 0, 0, 'L');
-        $this->pdf->Cell(5, 6, ':', 0, 0, 'L');
-        $this->pdf->Cell(0, 6, 'Kepala Desa', 0, 1, 'L');
+        $this->pdf->Cell(30, 4, 'Jabatan', 0, 0, 'L');
+        $this->pdf->Cell(4, 4, ':', 0, 0, 'L');
+        $this->pdf->Cell(0, 4, 'Kepala Desa', 0, 1, 'L');
         
-        $this->pdf->Cell(35, 6, 'Alamat', 0, 0, 'L');
-        $this->pdf->Cell(5, 6, ':', 0, 0, 'L');
-        $this->pdf->Cell(0, 6, 'Desa Tifu Kecamatan Lolong Guba Kab. Buru', 0, 1, 'L');
-        $this->pdf->Ln(4);
-        
-        // Main content
-        $this->pdf->Cell(0, 6, 'Dengan ini menerangkan dengan sesungguhnya bahwa:', 0, 1, 'L');
+        $this->pdf->Cell(30, 4, 'Alamat', 0, 0, 'L');
+        $this->pdf->Cell(4, 4, ':', 0, 0, 'L');
+        $this->pdf->Cell(0, 4, 'Desa Tifu Kecamatan Lolong Guba Kab. Buru', 0, 1, 'L');
         $this->pdf->Ln(2);
         
+        // Main content
+        $this->pdf->Cell(0, 4, 'Dengan ini menerangkan dengan sesungguhnya bahwa:', 0, 1, 'L');
+        $this->pdf->Ln(1);
+        
         // Pemohon data
-        $this->pdf->Cell(45, 6, 'Nama Lengkap / Alias', 0, 0, 'L');
-        $this->pdf->Cell(5, 6, ':', 0, 0, 'L');
-        $this->pdf->Cell(0, 6, $data['nama'] ?? '', 0, 1, 'L');
+        $this->pdf->Cell(40, 4, 'Nama Lengkap / Alias', 0, 0, 'L');
+        $this->pdf->Cell(4, 4, ':', 0, 0, 'L');
+        $this->pdf->Cell(0, 4, $data['nama'] ?? '', 0, 1, 'L');
         
-        $this->pdf->Cell(45, 6, 'NIK', 0, 0, 'L');
-        $this->pdf->Cell(5, 6, ':', 0, 0, 'L');
-        $this->pdf->Cell(0, 6, $data['nik'] ?? '', 0, 1, 'L');
+        $this->pdf->Cell(40, 4, 'NIK', 0, 0, 'L');
+        $this->pdf->Cell(4, 4, ':', 0, 0, 'L');
+        $this->pdf->Cell(0, 4, $data['nik'] ?? '', 0, 1, 'L');
         
-        $this->pdf->Cell(45, 6, 'Jenis Kelamin', 0, 0, 'L');
-        $this->pdf->Cell(5, 6, ':', 0, 0, 'L');
-        $this->pdf->Cell(0, 6, $data['jenis_kelamin'] ?? '', 0, 1, 'L');
+        $this->pdf->Cell(40, 4, 'Jenis Kelamin', 0, 0, 'L');
+        $this->pdf->Cell(4, 4, ':', 0, 0, 'L');
+        $this->pdf->Cell(0, 4, $data['jenis_kelamin'] ?? '', 0, 1, 'L');
         
-        $this->pdf->Cell(45, 6, 'Agama', 0, 0, 'L');
-        $this->pdf->Cell(5, 6, ':', 0, 0, 'L');
-        $this->pdf->Cell(0, 6, $data['agama'] ?? '', 0, 1, 'L');
+        $this->pdf->Cell(40, 4, 'Agama', 0, 0, 'L');
+        $this->pdf->Cell(4, 4, ':', 0, 0, 'L');
+        $this->pdf->Cell(0, 4, $data['agama'] ?? '', 0, 1, 'L');
         
-        $this->pdf->Cell(45, 6, 'Pekerjaan', 0, 0, 'L');
-        $this->pdf->Cell(5, 6, ':', 0, 0, 'L');
-        $this->pdf->Cell(0, 6, $data['pekerjaan'] ?? '', 0, 1, 'L');
+        $this->pdf->Cell(40, 4, 'Pekerjaan', 0, 0, 'L');
+        $this->pdf->Cell(4, 4, ':', 0, 0, 'L');
+        $this->pdf->Cell(0, 4, $data['pekerjaan'] ?? '', 0, 1, 'L');
         
-        $this->pdf->Cell(45, 6, 'Status perkawinan', 0, 0, 'L');
-        $this->pdf->Cell(5, 6, ':', 0, 0, 'L');
-        $this->pdf->Cell(0, 6, $data['status_perkawinan'] ?? '', 0, 1, 'L');
+        $this->pdf->Cell(40, 4, 'Status perkawinan', 0, 0, 'L');
+        $this->pdf->Cell(4, 4, ':', 0, 0, 'L');
+        $this->pdf->Cell(0, 4, $data['status_perkawinan'] ?? '', 0, 1, 'L');
         
-        $this->pdf->Cell(45, 6, 'Tempat Tinggal', 0, 0, 'L');
-        $this->pdf->Cell(5, 6, ':', 0, 0, 'L');
-        $this->pdf->MultiCell(0, 6, $data['alamat'] ?? '', 0, 'L');
-        $this->pdf->Ln(4);
+        $this->pdf->Cell(40, 4, 'Tempat Tinggal', 0, 0, 'L');
+        $this->pdf->Cell(4, 4, ':', 0, 0, 'L');
+        $this->pdf->MultiCell(0, 4, $data['alamat'] ?? '', 0, 'L');
+        $this->pdf->Ln(2);
         
         // Template-specific content
         if ($template && isset($template['content'])) {
@@ -156,10 +155,10 @@ class PdfGenerator
             $content = $data['keperluan'] ?? 'Surat keterangan ini dibuat untuk keperluan yang bersangkutan.';
         }
         
-        $this->pdf->MultiCell(0, 6, $content, 0, 'J');
-        $this->pdf->Ln(4);
+        $this->pdf->MultiCell(0, 4, $content, 0, 'J');
+        $this->pdf->Ln(2);
         
-        $this->pdf->MultiCell(0, 6, 'Demikian Surat keterangan ini di buat dan di pergunakan sebagaimana perlunya dan dapat di pertanggungjawabkan.', 0, 'J');
+        $this->pdf->MultiCell(0, 4, 'Demikian Surat keterangan ini di buat dan di pergunakan sebagaimana perlunya dan dapat di pertanggungjawabkan.', 0, 'J');
     }
     
     private function replaceTemplatePlaceholders($content, $data)
@@ -221,14 +220,8 @@ class PdfGenerator
     
     private function addSignature($data)
     {
-        // Check if there is enough space for the signature (approx 50 units)
-        // If not, add a page
-        $y = $this->pdf->GetY();
-        if ($y > 220) { // Assuming page height is 297, bottom margin is 20, 220 leaves ~57 units
-            $this->pdf->AddPage();
-        } else {
-            $this->pdf->Ln(6);
-        }
+        // Just add some spacing before signature without creating new page
+        $this->pdf->Ln(3);
         
         // Date and place
         $tanggal = date('d F Y');
@@ -236,17 +229,18 @@ class PdfGenerator
             $tanggal = date('d F Y', strtotime($data['tanggal_surat']));
         }
         
-        $this->pdf->Cell(0, 6, 'Tifu, ' . $tanggal, 0, 1, 'R');
-        $this->pdf->Cell(0, 6, 'PJS Kepala Desa Tifu,', 0, 1, 'R');
+        $this->pdf->SetFont('times', '', 10);
+        $this->pdf->Cell(0, 4, 'Tifu, ' . $tanggal, 0, 1, 'R');
+        $this->pdf->Cell(0, 4, 'PJS Kepala Desa Tifu,', 0, 1, 'R');
         
         // Provide space for signature
-        $this->pdf->Ln(18);
+        $this->pdf->Ln(10);
         
         // Signature name and NIP
-        $this->pdf->SetFont('times', 'BU', 12);
-        $this->pdf->Cell(0, 6, 'NIKLAS SALASIWA', 0, 1, 'R');
-        $this->pdf->SetFont('times', '', 12);
-        $this->pdf->Cell(0, 6, 'NIP 197005122014121004', 0, 1, 'R');
+        $this->pdf->SetFont('times', 'BU', 11);
+        $this->pdf->Cell(0, 4, 'NIKLAS SALASIWA', 0, 1, 'R');
+        $this->pdf->SetFont('times', '', 10);
+        $this->pdf->Cell(0, 4, 'NIP 197005122014121004', 0, 1, 'R');
     }
     
     public function output($filename = 'surat_keterangan.pdf', $dest = 'I')

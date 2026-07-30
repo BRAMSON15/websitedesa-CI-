@@ -112,15 +112,15 @@
                     <h6 style="color: var(--dark); margin-bottom: 0.8rem;">Field yang Diperlukan:</h6>
                     <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
                         <!-- Base fields -->
-                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">nama</span>
-                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">nik</span>
-                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">alamat</span>
-                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">keperluan</span>
+                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">(...............nama...............)</span>
+                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">(...............nik...............)</span>
+                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">(...............alamat...............)</span>
+                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">(...............keperluan...............)</span>
                         
                         <!-- Specific fields -->
                         <?php if(!empty($template['required_fields'])): ?>
                             <?php foreach($template['required_fields'] as $field): ?>
-                            <span style="background: #dcfce7; color: #166534; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;"><?= esc($field) ?></span>
+                            <span style="background: #dcfce7; color: #166534; padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">(...............<?= esc($field) ?>...............)</span>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
