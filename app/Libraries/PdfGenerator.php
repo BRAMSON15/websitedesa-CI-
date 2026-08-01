@@ -35,8 +35,11 @@ class PdfGenerator
         $this->pdf->SetFont('times', '', 11);
     }
     
-    public function generateSuratKeterangan($data, $letterType = null)
-    {
+        $userModel = new \App\Models\UserModel();
+        $kades = $userModel->where('role', 'kepala_desa')->first();
+        $data['nama_kepala_desa'] = $kades ? strtoupper($kades['nama']) : 'KEPALA DESA';
+        $data['nip_kepala_desa'] = $kades ? $kades['nik'] : '197005122014121004';
+
         // Add a page
         $this->pdf->AddPage();
         
@@ -102,7 +105,7 @@ class PdfGenerator
         // Kepala Desa info
         $this->pdf->Cell(30, 4, 'Nama', 0, 0, 'L');
         $this->pdf->Cell(4, 4, ':', 0, 0, 'L');
-        $this->pdf->Cell(0, 4, 'NIKLAS SALASIWA', 0, 1, 'L');
+        $this->pdf->Cell(0, 4, $data['nama_kepala_desa'], 0, 1, 'L');
         
         $this->pdf->Cell(30, 4, 'Jabatan', 0, 0, 'L');
         $this->pdf->Cell(4, 4, ':', 0, 0, 'L');
@@ -238,9 +241,13 @@ class PdfGenerator
         
         // Signature name and NIP
         $this->pdf->SetFont('times', 'BU', 11);
-        $this->pdf->Cell(0, 4, 'NIKLAS SALASIWA', 0, 1, 'R');
+        $this->pdf->Cell(0, 4, $data['nama_kepala_desa'], 0, 1, 'R');
         $this->pdf->SetFont('times', '', 10);
-        $this->pdf->Cell(0, 4, 'NIP 197005122014121004', 0, 1, 'R');
+        
+        $nip = $data['nip_kepala_desa'];
+        if (!empty($nip) && is_numeric($nip) && strlen($nip) >= 16) {
+            $this->pdf->Cell(0, 4, 'NIP. ' . $nip, 0, 1, 'R');
+        }
     }
     
     public function output($filename = 'surat_keterangan.pdf', $dest = 'I')

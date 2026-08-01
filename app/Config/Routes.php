@@ -19,6 +19,7 @@ $routes->get('/dashboard', 'DashboardController::index');
 
 // Penduduk Routes
 $routes->get('/penduduk', 'PendudukController::index');
+$routes->get('/penduduk/export', 'PendudukController::export');
 $routes->get('/penduduk/tambah', 'PendudukController::tambah');
 $routes->post('/penduduk/simpan', 'PendudukController::simpan');
 $routes->get('/penduduk/edit/(:segment)', 'PendudukController::edit/$1');
@@ -74,6 +75,7 @@ $routes->get('/profil/lihat_visimisi', 'ProfilController::lihat_visimisi');
 // Struktur Desa Routes
 $routes->get('/struktur/kelola', 'StrukturController::kelola');
 $routes->post('/struktur/simpan', 'StrukturController::simpan');
+$routes->post('/struktur/uploadFoto', 'StrukturController::uploadFoto');
 $routes->post('/struktur/update/(:num)', 'StrukturController::update/$1');
 $routes->get('/struktur/hapus/(:num)', 'StrukturController::hapus/$1');
 $routes->get('/struktur/lihat', 'StrukturController::lihat');

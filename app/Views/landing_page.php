@@ -140,21 +140,21 @@
                 display: none;
             }
 
-            /* Features section mobile */
-            #fitur .container {
-                padding: 60px 1rem !important;
+            /* Visi Misi and Sejarah section mobile */
+            #visimisi, #sejarah {
+                padding: 60px 1rem 20px !important;
             }
 
-            #fitur h2 {
+            #visimisi h2, #sejarah h2 {
                 font-size: 2rem !important;
                 margin-bottom: 0.8rem !important;
             }
 
-            #fitur p {
+            #visimisi p, #sejarah p {
                 font-size: 1rem !important;
             }
 
-            #fitur > div > div {
+            #visimisi > div:nth-child(2) {
                 grid-template-columns: 1fr !important;
                 gap: 1.5rem !important;
             }
@@ -205,7 +205,7 @@
                 font-size: 0.95rem !important;
             }
 
-            #fitur h2 {
+            #visimisi h2, #sejarah h2 {
                 font-size: 1.8rem !important;
             }
 
@@ -213,7 +213,7 @@
                 padding: 1.5rem !important;
             }
 
-            .glass > div {
+            #visimisi .glass > div {
                 width: 60px !important;
                 height: 60px !important;
                 font-size: 2rem !important;
@@ -319,7 +319,7 @@
                 <p style="font-size: 1.25rem; color: #e2e8f0; margin-bottom: 2.5rem; line-height: 1.7;">Pelayanan surat menyurat, peta administrasi, dan data penduduk kini lebih mudah, transparan, dan dapat diakses dari mana saja tanpa antri.</p>
                 <div style="display: flex; gap: 1rem;">
                     <a href="<?= base_url('/login') ?>" class="btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; background: var(--primary);">Mulai Sekarang <i class="ri-arrow-right-line"></i></a>
-                    <a href="#fitur" class="btn-outline" style="padding: 1rem 2rem; font-size: 1.1rem; border-color: rgba(255,255,255,0.3); color: #ffffff; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px);">Pelajari Fitur</a>
+                    <a href="#visimisi" class="btn-outline" style="padding: 1rem 2rem; font-size: 1.1rem; border-color: rgba(255,255,255,0.3); color: #ffffff; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px);">Kenali Desa</a>
                 </div>
             </div>
         </div>
@@ -351,39 +351,153 @@
         </div>
     </div>
 
-    <!-- Features section summary -->
-    <div id="fitur" class="container" style="padding: 100px 1.5rem;">
+    <!-- Profil & Sejarah & Peta Section -->
+    <div id="sejarah" class="container" style="padding: 100px 1.5rem 50px;">
         <div style="text-align: center; margin-bottom: 4rem;">
-            <h2 style="font-size: 2.5rem; color: var(--dark); margin-bottom: 1rem;">Layanan Unggulan Desa</h2>
-            <p style="color: #64748b; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Kami menghadirkan fitur yang memudahkan warga dalam mengurus administrasi.</p>
+            <h2 style="font-size: 2.5rem; color: var(--dark); margin-bottom: 1rem;">Profil, Sejarah & Peta Desa</h2>
+            <p style="color: #64748b; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Mengenal lebih dekat asal-usul dan profil <?= esc($profil['nama_desa'] ?? 'Desa') ?> serta batas wilayahnya.</p>
         </div>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-            <!-- fitur 1 -->
-            <div class="glass" style="padding: 2.5rem; border-top: 4px solid var(--primary); transition: transform 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
-                <div style="width: 70px; height: 70px; background: rgba(15, 118, 110, 0.1); color: var(--primary); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 1.5rem;">
-                    <i class="ri-file-paper-2-line"></i>
+            <!-- Sejarah Kiri -->
+            <div class="glass" style="padding: 2.5rem; border-top: 4px solid var(--primary);">
+                <h3 style="margin-top: 0; color: var(--dark); margin-bottom: 1.5rem; font-size: 1.5rem;"><i class="ri-history-line"></i> Sejarah Desa</h3>
+                <?php if (!empty($profil['gambar_sejarah'])): ?>
+                    <div style="text-align: center;">
+                        <img src="<?= base_url('uploads/sejarah/' . $profil['gambar_sejarah']) ?>" alt="Sejarah Desa" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    </div>
+                <?php endif; ?>
+                <div style="color: #64748b; line-height: 1.8; font-size: 1.05rem; text-align: justify;">
+                    <?= nl2br(esc($profil['sejarah'] ?? 'Belum ada data sejarah desa.')) ?>
                 </div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Pengajuan Surat</h3>
-                <p style="color: #64748b; line-height: 1.7;">Ajukan surat keterangan usaha, domisili, atau pengantar RT/RW secara aman dari rumah. Proses otomatis masuk ke kepala desa untuk persetujuan.</p>
             </div>
-            <!-- fitur 2 -->
-            <div class="glass" style="padding: 2.5rem; border-top: 4px solid var(--secondary); transition: transform 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
-                <div style="width: 70px; height: 70px; background: rgba(16, 185, 129, 0.1); color: var(--secondary); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 1.5rem;">
-                    <i class="ri-map-pin-2-line"></i>
-                </div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Peta Administrasi</h3>
-                <p style="color: #64748b; line-height: 1.7;">Akses peta interaktif yang menampilkan batas desa, wilayah rukun tetangga, hingga fasilitas jalan dan sumber daya alam secara visual.</p>
-            </div>
-            <!-- fitur 3 -->
-            <div class="glass" style="padding: 2.5rem; border-top: 4px solid #f59e0b; transition: transform 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
-                <div style="width: 70px; height: 70px; background: rgba(245, 158, 11, 0.1); color: #f59e0b; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 1.5rem;">
-                    <i class="ri-team-line"></i>
-                </div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Integrasi Kependudukan</h3>
-                <p style="color: #64748b; line-height: 1.7;">Seluruh data kartu keluarga dan NIK tersimpan dengan aman dan dapat diolah untuk menghasilkan laporan statistik warga yang akurat.</p>
+
+            <!-- Peta Kanan -->
+            <div class="glass" style="padding: 2.5rem; border-top: 4px solid #10b981;">
+                <h3 style="margin-top: 0; color: var(--dark); margin-bottom: 1.5rem; font-size: 1.5rem;"><i class="ri-map-pin-line"></i> Peta Administrasi</h3>
+                <?php if (!empty($peta) && !empty($peta['koordinat_lat'])): ?>
+                    <div style="text-align: center;">
+                        <div id="landingMap" style="width: 100%; height: 350px; border-radius: 12px; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 1;"></div>
+                    </div>
+                    <?php if(!empty($peta['deskripsi'])): ?>
+                        <div style="color: #64748b; line-height: 1.8; font-size: 1.05rem; text-align: justify; padding: 1rem; background: #f8fafc; border-radius: 8px;">
+                            <?= nl2br(esc($peta['deskripsi'])) ?>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <!-- Leaflet JS & CSS -->
+                    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            let lat = <?= esc($peta['koordinat_lat']) ?>;
+                            let lng = <?= esc($peta['koordinat_lng']) ?>;
+                            let landingMap = L.map('landingMap').setView([lat, lng], 14);
+                            
+                            L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+                                maxZoom: 20,
+                                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                                attribution: '© Google Maps'
+                            }).addTo(landingMap);
+
+                            const customIcon = L.divIcon({
+                                className: 'custom-pin',
+                                html: `<div style="background-color: #10b981; width: 24px; height: 24px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.3);"></div>`,
+                                iconSize: [24, 24],
+                                iconAnchor: [12, 24]
+                            });
+
+                            L.marker([lat, lng], {icon: customIcon}).addTo(landingMap)
+                                .bindPopup("<b><?= esc($peta['judul_peta'] ?? 'Peta Administrasi') ?></b><br>Titik Pusat Desa")
+                                .openPopup();
+                        });
+                    </script>
+                <?php else: ?>
+                    <div style="text-align: center; color: #94a3b8; padding: 2rem;">
+                        <p>Belum ada peta administrasi yang diatur.</p>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
+    </div>
+    
+    <!-- Struktur Desa Section -->
+    <div id="struktur" class="container" style="padding: 100px 1.5rem 50px;">
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <h2 style="font-size: 2.5rem; color: var(--dark); margin-bottom: 1rem;">Struktur Pemerintahan Desa</h2>
+            <p style="color: #64748b; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Pemerintah desa yang bertugas dan melayani masyarakat.</p>
+        </div>
+        
+        <?php if(empty($profil['struktur_json'])): ?>
+        <div style="text-align: center; color: #94a3b8; padding: 2rem;">
+            <p>Belum ada bagan struktur desa yang dibuat.</p>
+        </div>
+        <?php else: ?>
+        <!-- Modal Detail Publik -->
+        <div id="publicDetailModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+            <div style="background: white; padding: 2.5rem; border-radius: 16px; width: 100%; max-width: 350px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); position: relative;">
+                <button onclick="document.getElementById('publicDetailModal').style.display='none'" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #94a3b8; transition: color 0.3s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#94a3b8'"><i class="ri-close-line"></i></button>
+                
+                <div style="width: 120px; height: 120px; margin: 0 auto 1.5rem; border-radius: 50%; padding: 5px; border: 3px solid var(--primary);">
+                    <img id="detailImg" src="" alt="Profil" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; background: #f1f5f9;">
+                </div>
+                <h3 id="detailName" style="margin: 0 0 0.5rem; color: var(--dark); font-size: 1.5rem;"></h3>
+                <p id="detailTitle" style="margin: 0; color: #3b82f6; font-weight: 600; font-size: 1.1rem;"></p>
+                <div style="margin-top: 1.5rem; padding-jtop: 1.5rem; border-top: 1px solid #f1f5f9;">
+                    <span style="display: inline-block; padding: 0.4rem 1rem; background: #eff6ff; color: #1e40af; border-radius: 20px; font-size: 0.9rem; font-weight: 500;">Pemerintah Desa Tifu</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass" style="padding: 1.5rem; border-top: 4px solid var(--primary); overflow: hidden;">
+            <style>
+                #tree-public { width: 100%; height: 600px; background: transparent; }
+                .balkan-app-watermark { display: none !important; }
+            </style>
+            <script src="https://balkan.app/js/OrgChart.js"></script>
+            <div id="tree-public"></div>
+            <script>
+                // Desain Kustom (Tengah Sempurna)
+                OrgChart.templates.desa = Object.assign({}, OrgChart.templates.ana);
+                OrgChart.templates.desa.size = [200, 200];
+                OrgChart.templates.desa.node = '<rect x="0" y="0" height="200" width="200" fill="#0ea5e9" stroke-width="1" stroke="#0ea5e9" rx="15" ry="15"></rect>';
+                OrgChart.templates.desa.field_0 = '<text style="font-size: 18px; font-weight: 600; font-family: Inter, sans-serif;" fill="#ffffff" x="100" y="145" text-anchor="middle">{val}</text>';
+                OrgChart.templates.desa.field_1 = '<text style="font-size: 14px; font-family: Inter, sans-serif;" fill="#f0f9ff" x="100" y="170" text-anchor="middle">{val}</text>';
+                OrgChart.templates.desa.img_0 = '<clipPath id="{randId}"><circle cx="100" cy="70" r="45"></circle></clipPath><image preserveAspectRatio="xMidYMid slice" clip-path="url(#{randId})" xlink:href="{val}" x="55" y="25" width="90" height="90"></image>';
+
+                var chartPublic = new OrgChart(document.getElementById("tree-public"), {
+                    enableSearch: false,
+                    template: "desa", // Template desa khusus buatan kita
+                    mouseScroller: OrgChart.action.none, // Tidak bisa digeser/pan
+                    scaleInitial: OrgChart.match.boundary, // Menyesuaikan ukuran semua node
+                    nodeMouseClick: OrgChart.action.none, // Matikan popup bawaan
+                    nodeBinding: {
+                        field_0: "name",
+                        field_1: "title",
+                        img_0: "img"
+                    },
+                    nodes: <?= $profil['struktur_json'] ?>
+                });
+
+                // Menampilkan popup kustom kita saat diklik
+                chartPublic.on('click', function(sender, args) {
+                    var node = chartPublic.get(args.node.id);
+                    document.getElementById('detailName').innerText = node.name || '-';
+                    document.getElementById('detailTitle').innerText = node.title || '-';
+                    
+                    var img = document.getElementById('detailImg');
+                    if(node.img) {
+                        img.src = node.img;
+                    } else {
+                        img.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(node.name || 'A') + '&background=e2e8f0&color=475569&size=150';
+                    }
+                    
+                    document.getElementById('publicDetailModal').style.display = 'flex';
+                    return false;
+                });
+            </script>
+        </div>
+        <?php endif; ?>
     </div>
     
     <footer style="background: var(--dark); color: #cbd5e1; padding: 4rem 1.5rem 2rem; border-top: 1px solid rgba(255,255,255,0.1);">

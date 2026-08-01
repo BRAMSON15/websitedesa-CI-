@@ -82,8 +82,8 @@ class SuratController extends BaseController
 
         $session = session();
         
-        // Hanya admin yang bisa akses
-        if($session->get('role') !== 'admin') {
+        // Hanya admin dan kepala desa yang bisa akses
+        if(!in_array($session->get('role'), ['admin', 'kepala_desa'])) {
             return redirect()->to('/dashboard')->with('error', 'Akses ditolak');
         }
 
@@ -115,8 +115,8 @@ class SuratController extends BaseController
 
         $session = session();
         
-        // Hanya admin yang bisa akses
-        if($session->get('role') !== 'admin') {
+        // Hanya admin dan kepala desa yang bisa akses
+        if(!in_array($session->get('role'), ['admin', 'kepala_desa'])) {
             return redirect()->to('/dashboard')->with('error', 'Akses ditolak');
         }
 
@@ -145,6 +145,10 @@ class SuratController extends BaseController
             ]);
 
             $message = $status == 'Disetujui' ? 'Pengajuan surat berhasil disetujui' : 'Pengajuan surat berhasil ditolak';
+            
+            if ($session->get('role') === 'kepala_desa') {
+                return redirect()->to('/surat/persetujuan')->with('success', $message);
+            }
             return redirect()->to('/surat/kelola')->with('success', $message);
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal memproses verifikasi: ' . $e->getMessage());
@@ -358,8 +362,8 @@ class SuratController extends BaseController
 
         $session = session();
         
-        // Hanya admin yang bisa generate PDF
-        if($session->get('role') !== 'admin') {
+        // Hanya admin dan kepala desa yang bisa generate PDF
+        if(!in_array($session->get('role'), ['admin', 'kepala_desa'])) {
             return redirect()->to('/dashboard')->with('error', 'Akses ditolak');
         }
 
@@ -424,8 +428,8 @@ class SuratController extends BaseController
 
         $session = session();
         
-        // Hanya admin yang bisa preview PDF
-        if($session->get('role') !== 'admin') {
+        // Hanya admin dan kepala desa yang bisa preview PDF
+        if(!in_array($session->get('role'), ['admin', 'kepala_desa'])) {
             return redirect()->to('/dashboard')->with('error', 'Akses ditolak');
         }
 

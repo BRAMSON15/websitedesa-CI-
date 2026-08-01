@@ -38,6 +38,9 @@
                 <p style="color: #64748b; font-size: 0.95rem;">Kelola data penduduk desa</p>
             </div>
             <div style="display: flex; gap: 1rem; align-items: center;">
+                <a href="<?= base_url('/penduduk/export') ?>" class="btn-primary" style="background: #10b981; border-color: #10b981; padding: 0.6rem 1.2rem; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="ri-file-excel-2-line"></i> Export Excel
+                </a>
                 <a href="<?= base_url('/penduduk/tambah') ?>" class="btn-primary" style="padding: 0.6rem 1.2rem; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
                     <i class="ri-user-add-line"></i> Tambah Penduduk
                 </a>

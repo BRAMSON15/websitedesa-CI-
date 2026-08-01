@@ -46,14 +46,60 @@ class UserController extends BaseController
         $userId = $session->get('user_id');
         $oldUser = $userModel->find($userId);
         $oldNik = $oldUser['nik'];
+        $role = $session->get('role');
+        $isKepalaDesa = $role === 'kepala_desa';
+        
+        $nikLabel = $isKepalaDesa ? 'NIP' : 'NIK';
+        $nikRules = $isKepalaDesa ? "required|numeric|min_length[16]|max_length[18]|is_unique[users.nik,user_id,{$userId}]" : "required|exact_length[16]|numeric|is_unique[users.nik,user_id,{$userId}]";
 
         $rules = [
-            'nama' => 'required|min_length[3]|max_length[100]',
-            'nik' => "required|exact_length[16]|numeric|is_unique[users.nik,user_id,{$userId}]",
-            'username' => "required|min_length[3]|max_length[100]|regex_match[/^[a-zA-Z0-9_]+$/]|is_unique[users.username,user_id,{$userId}]",
-            'email' => "required|valid_email|is_unique[users.email,user_id,{$userId}]",
-            'no_telepon' => 'required|min_length[10]|max_length[20]',
-            'alamat' => 'required|min_length[10]'
+            'nama' => [
+                'rules' => 'required|min_length[3]|max_length[100]',
+                'errors' => [
+                    'required' => 'Nama lengkap wajib diisi.',
+                    'min_length' => 'Nama minimal 3 karakter.'
+                ]
+            ],
+            'nik' => [
+                'rules' => $nikRules,
+                'errors' => [
+                    'required' => "$nikLabel wajib diisi.",
+                    'exact_length' => "$nikLabel harus 16 digit.",
+                    'min_length' => "$nikLabel minimal 16 digit.",
+                    'max_length' => "$nikLabel maksimal 18 digit.",
+                    'numeric' => "$nikLabel hanya boleh berisi angka.",
+                    'is_unique' => "$nikLabel ini sudah terdaftar pada akun lain."
+                ]
+            ],
+            'username' => [
+                'rules' => "required|min_length[3]|max_length[100]|regex_match[/^[a-zA-Z0-9_\.]+$/]|is_unique[users.username,user_id,{$userId}]",
+                'errors' => [
+                    'required' => 'Username wajib diisi.',
+                    'min_length' => 'Username minimal 3 karakter.',
+                    'regex_match' => 'Username hanya boleh berisi huruf, angka, garis bawah, dan titik (Tanpa Spasi).',
+                    'is_unique' => 'Username ini sudah digunakan.'
+                ]
+            ],
+            'email' => [
+                'rules' => "required|valid_email|is_unique[users.email,user_id,{$userId}]",
+                'errors' => [
+                    'required' => 'Email wajib diisi.',
+                    'valid_email' => 'Format email tidak valid.',
+                    'is_unique' => 'Email ini sudah terdaftar.'
+                ]
+            ],
+            'no_telepon' => [
+                'rules' => 'required|min_length[10]|max_length[20]',
+                'errors' => [
+                    'required' => 'Nomor telepon wajib diisi.'
+                ]
+            ],
+            'alamat' => [
+                'rules' => 'required|min_length[10]',
+                'errors' => [
+                    'required' => 'Alamat lengkap wajib diisi.'
+                ]
+            ]
         ];
 
         if (!$this->validate($rules)) {

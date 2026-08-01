@@ -307,4 +307,50 @@ class PendudukController extends BaseController
 
         return view('admin/penduduk/index', $data);
     }
+    // Export data penduduk ke excel
+    public function export()
+    {
+        $auth = $this->checkAuth();
+        if($auth) return $auth;
+
+        $pendudukList = $this->pendudukModel->findAll();
+
+        $filename = 'Data_Penduduk_' . date('Ymd_His') . '.xls';
+        
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        echo '<table border="1">';
+        echo '<tr>';
+        echo '<th>No</th>';
+        echo '<th>NIK</th>';
+        echo '<th>Nama</th>';
+        echo '<th>Tempat, Tanggal Lahir</th>';
+        echo '<th>Jenis Kelamin</th>';
+        echo '<th>Alamat</th>';
+        echo '<th>Agama</th>';
+        echo '<th>Pekerjaan</th>';
+        echo '<th>Status Perkawinan</th>';
+        echo '<th>Nomor KK</th>';
+        echo '</tr>';
+
+        $no = 1;
+        foreach ($pendudukList as $p) {
+            echo '<tr>';
+            echo '<td>' . $no++ . '</td>';
+            echo '<td style="mso-number-format:\'\@\';">' . $p['nik'] . '</td>';
+            echo '<td>' . $p['nama'] . '</td>';
+            echo '<td>' . $p['ttl'] . '</td>';
+            echo '<td>' . $p['jenis_kelamin'] . '</td>';
+            echo '<td>' . $p['alamat'] . '</td>';
+            echo '<td>' . $p['agama'] . '</td>';
+            echo '<td>' . $p['pekerjaan'] . '</td>';
+            echo '<td>' . $p['status'] . '</td>';
+            echo '<td style="mso-number-format:\'\@\';">' . ($p['nomor_kk'] ?? '-') . '</td>';
+            echo '</tr>';
+        }
+        echo '</table>';
+        exit();
+    }
 }

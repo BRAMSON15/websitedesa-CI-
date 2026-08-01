@@ -1,5 +1,21 @@
 <?= $this->extend('layout/main') ?>
 <?= $this->section('content') ?>
+<script src="https://balkan.app/js/OrgChart.js"></script>
+<style>
+    #tree {
+        width: 100%;
+        height: 600px;
+        background: #f8fafc;
+        border: 2px dashed #cbd5e1;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    
+    /* Customize the editor a bit if needed */
+    .balkan-app-watermark { display: none !important; }
+</style>
+
 <div class="dashboard-wrapper">
     <div class="sidebar" style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
         <div style="flex-shrink: 0; padding-bottom: 1rem; border-bottom: 1px solid #f1f5f9;">
@@ -35,155 +51,189 @@
     <div class="main-content">
         <div class="topbar">
             <div>
-                <h3 style="color: var(--dark); font-size: 1.8rem; margin-bottom: 0.3rem;">Kelola Struktur Desa</h3>
-                <p style="color: #64748b; font-size: 0.95rem;">Manajemen data perangkat dan struktur desa</p>
+                <h3 style="color: var(--dark); font-size: 1.8rem; margin-bottom: 0.3rem;">Visual Editor Bagan Struktur Desa</h3>
+                <p style="color: #64748b; font-size: 0.95rem;">Desain bagan organisasi desa interaktif yang akan tampil di halaman depan.</p>
             </div>
             <div style="display: flex; gap: 1rem; align-items: center;">
-                <button onclick="openModal('addModal')" class="btn-primary" style="padding: 0.6rem 1.2rem; display: flex; align-items: center; gap: 0.5rem; border: none; cursor: pointer;">
-                    <i class="ri-user-add-line"></i> Tambah Perangkat
+                <button onclick="saveChart()" class="btn-primary" style="padding: 0.6rem 1.5rem; display: flex; align-items: center; gap: 0.5rem; border: none; cursor: pointer; font-size: 1rem; font-weight: 600;">
+                    <i class="ri-save-3-line"></i> Simpan Bagan
                 </button>
-                <div style="display: flex; align-items: center; gap: 0.8rem; background: white; padding: 0.4rem 0.4rem 0.4rem 1.2rem; border-radius: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer;">
+                <div style="display: flex; align-items: center; gap: 0.8rem; background: white; padding: 0.4rem 0.4rem 0.4rem 1.2rem; border-radius: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
                     <span style="font-weight: 600; font-size: 0.95rem; color: var(--dark); padding-right: 0.5rem;"><?= esc($nama) ?></span>
                     <img src="https://ui-avatars.com/api/?name=<?= urlencode($nama) ?>&background=4F46E5&color=fff" alt="Avatar" style="width: 38px; height: 38px; border-radius: 50%;">
                 </div>
             </div>
         </div>
 
-        <?php if(session()->getFlashdata('success')): ?>
-        <div style="background: #d1fae5; border-left: 4px solid #10b981; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-            <i class="ri-checkbox-circle-line" style="font-size: 1.5rem; color: #10b981;"></i>
-            <p style="color: #065f46; margin: 0;"><?= session()->getFlashdata('success') ?></p>
-        </div>
-        <?php endif; ?>
+        <div id="alert-container"></div>
 
-        <?php if(session()->getFlashdata('error')): ?>
-        <div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-            <i class="ri-error-warning-line" style="font-size: 1.5rem; color: #ef4444;"></i>
-            <p style="color: #991b1b; margin: 0;"><?= session()->getFlashdata('error') ?></p>
-        </div>
-        <?php endif; ?>
-
-        <div class="card" style="padding: 0; overflow: hidden;">
-            <div style="padding: 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
-                <h4 style="color: var(--dark); display: flex; align-items: center; gap: 0.5rem; margin: 0;">
-                    <i class="ri-organization-chart" style="color: var(--primary);"></i> 
-                    Daftar Perangkat Desa
-                </h4>
-            </div>
-
-            <?php if(empty($struktur_list)): ?>
-            <div style="padding: 3rem 0; text-align: center; color: #94a3b8;">
-                <div style="width: 80px; height: 80px; background: #f8fafc; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
-                    <i class="ri-group-line" style="font-size: 2.5rem; color: #cbd5e1;"></i>
+        <div class="card" style="padding: 1rem;">
+            <div style="display: flex; gap: 1rem; margin-bottom: 1rem; padding: 1rem; background: #eff6ff; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                <i class="ri-information-fill" style="color: #3b82f6; font-size: 1.5rem;"></i>
+                <div>
+                    <h5 style="color: #1e40af; margin-bottom: 0.2rem;">Petunjuk Penggunaan:</h5>
+                    <p style="color: #1e3a8a; font-size: 0.9rem; margin: 0;">
+                        1. Klik ikon <b>titik tiga (⋮)</b> di pojok kanan atas kotak jabatan untuk memunculkan menu.<br>
+                        2. Pilih <b>Tambah Bawahan</b> untuk menambahkan anggota baru di bawah posisi tersebut.<br>
+                        3. Klik 2 kali pada kotak, atau pilih <b>Edit Kotak Ini</b> untuk mengubah Nama dan Jabatan.<br>
+                        4. Jangan lupa klik <b>Simpan Bagan</b> di pojok kanan atas setelah selesai mendesain.
+                    </p>
                 </div>
-                <h5 style="color: #64748b; margin-bottom: 0.5rem;">Belum Ada Data Struktur Desa</h5>
-                <p style="font-size: 0.95rem; margin-bottom: 1.5rem;">Mulai tambahkan perangkat desa baru</p>
-                <button onclick="openModal('addModal')" class="btn-primary" style="padding: 0.6rem 1.5rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
-                    <i class="ri-add-line"></i> Tambah Data Pertama
-                </button>
             </div>
-            <?php else: ?>
-            <div style="overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                            <th style="padding: 1rem; text-align: left; color: var(--dark); font-weight: 600; width: 50px;">No</th>
-                            <th style="padding: 1rem; text-align: left; color: var(--dark); font-weight: 600;">Nama</th>
-                            <th style="padding: 1rem; text-align: left; color: var(--dark); font-weight: 600;">Jabatan</th>
-                            <th style="padding: 1rem; text-align: center; color: var(--dark); font-weight: 600; width: 200px;">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($struktur_list as $index => $item): ?>
-                        <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='white'">
-                            <td style="padding: 1rem; color: #64748b;"><?= $index + 1 ?></td>
-                            <td style="padding: 1rem; font-weight: 500; color: var(--dark);"><?= esc($item['nama']) ?></td>
-                            <td style="padding: 1rem; color: #64748b;">
-                                <span style="background: #e0e7ff; color: #4338ca; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
-                                    <?= esc($item['jabatan']) ?>
-                                </span>
-                            </td>
-                            <td style="padding: 1rem; text-align: center;">
-                                <div style="display: flex; gap: 0.5rem; justify-content: center;">
-                                    <button onclick="openEditModal(<?= $item['id_struktur'] ?>, '<?= esc(addslashes($item['nama'])) ?>', '<?= esc(addslashes($item['jabatan'])) ?>')" class="btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem;">
-                                        <i class="ri-edit-line"></i> Edit
-                                    </button>
-                                    <a href="<?= base_url('/struktur/hapus/' . $item['id_struktur']) ?>" onclick="return confirm('Yakin ingin menghapus data ini?')" style="padding: 0.4rem 0.8rem; background: #ef4444; color: white; border-radius: 6px; text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.3rem;">
-                                        <i class="ri-delete-bin-line"></i> Hapus
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-            <?php endif; ?>
+
+            <!-- Canvas Bagan -->
+            <div id="tree"></div>
         </div>
     </div>
 </div>
 
-<!-- Modal Tambah -->
-<div id="addModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-    <div style="background: white; padding: 2rem; border-radius: 12px; width: 100%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <h4 style="margin: 0; color: var(--dark);">Tambah Perangkat Desa</h4>
-            <button onclick="closeModal('addModal')" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b;">&times;</button>
+<!-- Modal Edit Kustom -->
+<div id="customEditModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 2rem; border-radius: 12px; width: 100%; max-width: 400px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
+        <h4 style="margin-top: 0; color: var(--dark);">Edit Profil Anggota</h4>
+        <input type="hidden" id="editNodeId">
+        
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Nama Lengkap</label>
+            <input type="text" id="editNodeName" style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
         </div>
-        <form action="<?= base_url('/struktur/simpan') ?>" method="POST">
-            <div style="margin-bottom: 1rem;">
-                <label style="display: block; margin-bottom: 0.5rem; color: var(--dark); font-weight: 500;">Nama Lengkap</label>
-                <input type="text" name="nama" required style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
-            </div>
-            <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; margin-bottom: 0.5rem; color: var(--dark); font-weight: 500;">Jabatan</label>
-                <input type="text" name="jabatan" required placeholder="Contoh: Kepala Desa, Sekretaris, dll" style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
-            </div>
-            <div style="display: flex; justify-content: flex-end; gap: 1rem;">
-                <button type="button" onclick="closeModal('addModal')" style="padding: 0.6rem 1.2rem; background: #f1f5f9; color: #64748b; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">Batal</button>
-                <button type="submit" class="btn-primary" style="padding: 0.6rem 1.2rem; border: none; cursor: pointer; font-weight: 500;">Simpan Data</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Modal Edit -->
-<div id="editModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-    <div style="background: white; padding: 2rem; border-radius: 12px; width: 100%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <h4 style="margin: 0; color: var(--dark);">Edit Perangkat Desa</h4>
-            <button onclick="closeModal('editModal')" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b;">&times;</button>
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Jabatan</label>
+            <input type="text" id="editNodeTitle" style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
         </div>
-        <form id="editForm" method="POST">
-            <div style="margin-bottom: 1rem;">
-                <label style="display: block; margin-bottom: 0.5rem; color: var(--dark); font-weight: 500;">Nama Lengkap</label>
-                <input type="text" id="editNama" name="nama" required style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
-            </div>
-            <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; margin-bottom: 0.5rem; color: var(--dark); font-weight: 500;">Jabatan</label>
-                <input type="text" id="editJabatan" name="jabatan" required style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
-            </div>
-            <div style="display: flex; justify-content: flex-end; gap: 1rem;">
-                <button type="button" onclick="closeModal('editModal')" style="padding: 0.6rem 1.2rem; background: #f1f5f9; color: #64748b; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">Batal</button>
-                <button type="submit" class="btn-primary" style="padding: 0.6rem 1.2rem; border: none; cursor: pointer; font-weight: 500;">Update Data</button>
-            </div>
-        </form>
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Foto Profil (Opsional)</label>
+            <input type="file" id="editNodePhoto" accept="image/*" style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 0.9rem;">
+        </div>
+        
+        <div style="display: flex; justify-content: flex-end; gap: 1rem;">
+            <button onclick="document.getElementById('customEditModal').style.display='none'" style="padding: 0.6rem 1.2rem; background: #f1f5f9; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Batal</button>
+            <button onclick="saveCustomNode()" id="btnSaveNode" class="btn-primary" style="padding: 0.6rem 1.2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Simpan Data</button>
+        </div>
     </div>
 </div>
 
 <script>
-    function openModal(id) {
-        document.getElementById(id).style.display = 'flex';
+    var chartData = <?= $struktur_json ?>;
+
+    // Desain Kustom (Tengah Sempurna)
+    OrgChart.templates.desa = Object.assign({}, OrgChart.templates.ana);
+    OrgChart.templates.desa.size = [200, 200];
+    OrgChart.templates.desa.node = '<rect x="0" y="0" height="200" width="200" fill="#0ea5e9" stroke-width="1" stroke="#0ea5e9" rx="15" ry="15"></rect>';
+    OrgChart.templates.desa.field_0 = '<text style="font-size: 18px; font-weight: 600; font-family: Inter, sans-serif;" fill="#ffffff" x="100" y="145" text-anchor="middle">{val}</text>';
+    OrgChart.templates.desa.field_1 = '<text style="font-size: 14px; font-family: Inter, sans-serif;" fill="#f0f9ff" x="100" y="170" text-anchor="middle">{val}</text>';
+    OrgChart.templates.desa.img_0 = '<clipPath id="{randId}"><circle cx="100" cy="70" r="45"></circle></clipPath><image preserveAspectRatio="xMidYMid slice" clip-path="url(#{randId})" xlink:href="{val}" x="55" y="25" width="90" height="90"></image>';
+
+    var chart = new OrgChart(document.getElementById("tree"), {
+        enableSearch: false,
+        template: "desa", 
+        mouseScroller: OrgChart.action.pan,
+        editUI: new OrgChart.editUI(), 
+        nodeMenu: {
+            add: { text: "Tambah Bawahan" },
+            edit: { text: "Edit Kotak Ini" },
+            remove: { text: "Hapus Kotak Ini" }
+        },
+        nodeBinding: {
+            field_0: "name",    
+            field_1: "title",
+            img_0: "img" // Binding gambar
+        },
+        nodes: chartData
+    });
+
+    // Mencegah editUI bawaan dan menampilkan Modal kustom kita
+    chart.editUI.on('show', function (sender, id) {
+        var node = chart.get(id);
+        document.getElementById('editNodeId').value = id;
+        document.getElementById('editNodeName').value = node.name || '';
+        document.getElementById('editNodeTitle').value = node.title || '';
+        document.getElementById('editNodePhoto').value = '';
+        
+        document.getElementById('customEditModal').style.display = 'flex';
+        return false; // Mencegah editUI default
+    });
+
+    function saveCustomNode() {
+        var id = document.getElementById('editNodeId').value;
+        var name = document.getElementById('editNodeName').value;
+        var title = document.getElementById('editNodeTitle').value;
+        var fileInput = document.getElementById('editNodePhoto');
+        var btn = document.getElementById('btnSaveNode');
+        
+        btn.innerHTML = 'Menyimpan...';
+        btn.disabled = true;
+
+        if (fileInput.files.length > 0) {
+            var formData = new FormData();
+            formData.append('foto', fileInput.files[0]);
+            
+            fetch('<?= base_url('/struktur/uploadFoto') ?>', {
+                method: 'POST',
+                body: formData
+            }).then(res => res.json()).then(data => {
+                btn.innerHTML = 'Simpan Data';
+                btn.disabled = false;
+                if (data.status === 'success') {
+                    chart.updateNode({ id: id, pid: chart.get(id).pid, name: name, title: title, img: data.url });
+                    document.getElementById('customEditModal').style.display = 'none';
+                } else {
+                    alert(data.message);
+                }
+            }).catch(e => {
+                btn.innerHTML = 'Simpan Data';
+                btn.disabled = false;
+                alert('Gagal mengunggah foto');
+            });
+        } else {
+            var oldImg = chart.get(id).img || null;
+            chart.updateNode({ id: id, pid: chart.get(id).pid, name: name, title: title, img: oldImg });
+            btn.innerHTML = 'Simpan Data';
+            btn.disabled = false;
+            document.getElementById('customEditModal').style.display = 'none';
+        }
     }
-    function closeModal(id) {
-        document.getElementById(id).style.display = 'none';
-    }
-    function openEditModal(id, nama, jabatan) {
-        document.getElementById('editForm').action = '<?= base_url('/struktur/update/') ?>' + id;
-        document.getElementById('editNama').value = nama;
-        document.getElementById('editJabatan').value = jabatan;
-        openModal('editModal');
+
+    function saveChart() {
+        var nodesArray = [];
+        if (chart && chart.nodes) {
+            for (var id in chart.nodes) {
+                var nodeData = chart.get(id);
+                if(nodeData) nodesArray.push(nodeData);
+            }
+        }
+        
+        var jsonString = JSON.stringify(nodesArray);
+        var btn = document.querySelector('button[onclick="saveChart()"]');
+        var oldHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="ri-loader-4-line ri-spin"></i> Menyimpan...';
+        btn.disabled = true;
+
+        fetch('<?= base_url('/struktur/simpan') ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: 'struktur_json=' + encodeURIComponent(jsonString)
+        })
+        .then(response => response.json())
+        .then(data => {
+            btn.innerHTML = oldHtml;
+            btn.disabled = false;
+            var alertContainer = document.getElementById('alert-container');
+            if(data.status === 'success') {
+                alertContainer.innerHTML = '<div style="background: #d1fae5; border-left: 4px solid #10b981; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;"><i class="ri-checkbox-circle-line" style="font-size: 1.5rem; color: #10b981;"></i><p style="color: #065f46; margin: 0;">' + data.message + '</p></div>';
+            } else {
+                alertContainer.innerHTML = '<div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;"><i class="ri-error-warning-line" style="font-size: 1.5rem; color: #ef4444;"></i><p style="color: #991b1b; margin: 0;">' + data.message + '</p></div>';
+            }
+            setTimeout(() => { alertContainer.innerHTML = ''; }, 3000);
+        })
+        .catch(error => {
+            btn.innerHTML = oldHtml;
+            btn.disabled = false;
+            alert("Terjadi kesalahan sistem saat menyimpan data.");
+        });
     }
 </script>
-
 <?= $this->endSection() ?>

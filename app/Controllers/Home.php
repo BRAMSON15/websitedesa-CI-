@@ -8,6 +8,13 @@ class Home extends BaseController
     {
         $profilModel = new \App\Models\ProfilDesaModel();
         $profil = $profilModel->first();
-        return view('landing_page', ['profil' => $profil]);
+        
+        $petaModel = new \App\Models\PetaAdministrasiModel();
+        $peta = $petaModel->first();
+        
+        return view('landing_page', [
+            'profil' => $profil,
+            'peta' => $peta
+        ]);
     }
 }
