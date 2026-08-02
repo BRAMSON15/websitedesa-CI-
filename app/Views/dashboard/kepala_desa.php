@@ -113,23 +113,6 @@
                 </a>
             </div>
         </div>
-
-        <!-- Pending Approvals List -->
-        <div class="card" style="padding: 0; overflow: hidden;">
-            <div style="padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
-                <h4 style="color: var(--dark); display: flex; align-items: center; gap: 0.5rem;">
-                    <i class="ri-file-list-3-line" style="color: var(--primary);"></i> Surat Menunggu Persetujuan
-                </h4>
-                <button class="btn-outline" style="padding: 0.4rem 1rem; font-size: 0.9rem;">Lihat Semua</button>
-            </div>
-            <div style="padding: 3rem 0; text-align: center; color: #94a3b8; background: #fafafa;">
-                <div style="width: 80px; height: 80px; background: white; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
-                    <i class="ri-inbox-archive-line" style="font-size: 2.5rem; color: #cbd5e1;"></i>
-                </div>
-                <h5 style="color: #64748b; margin-bottom: 0.5rem; font-size: 1.1rem;">Tidak Ada Pengajuan Baru</h5>
-                <p style="font-size: 0.95rem;">Pengajuan surat dari masyarakat akan muncul di sini.</p>
-            </div>
-        </div>
     </div>
 </div>
 <?= $this->endSection() ?>
