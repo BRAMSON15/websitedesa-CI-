@@ -4,12 +4,13 @@
 <style>
     #tree {
         width: 100%;
-        height: 600px;
+        height: 650px;
         background: #f8fafc;
         border: 2px dashed #cbd5e1;
         border-radius: 12px;
         margin-bottom: 2rem;
         position: relative;
+        overflow: visible !important;
     }
     
     /* Customize the editor a bit if needed */
@@ -106,14 +107,26 @@
             <input type="file" id="editNodePhoto" accept="image/*" style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 0.9rem;">
         </div>
         
-        <div style="display: flex; justify-content: flex-end; gap: 1rem;">
-            <button onclick="document.getElementById('customEditModal').style.display='none'" style="padding: 0.6rem 1.2rem; background: #f1f5f9; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Batal</button>
-            <button onclick="saveCustomNode()" id="btnSaveNode" class="btn-primary" style="padding: 0.6rem 1.2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Simpan Data</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+            <button onclick="deleteCustomNode()" type="button" style="padding: 0.6rem 1.2rem; background: #fee2e2; color: #ef4444; border: 1px solid #fca5a5; border-radius: 6px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: background 0.2s;">
+                <i class="ri-delete-bin-line"></i> Hapus Kotak
+            </button>
+            <div style="display: flex; gap: 1rem;">
+                <button onclick="document.getElementById('customEditModal').style.display='none'" style="padding: 0.6rem 1.2rem; background: #f1f5f9; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; color: #64748b;">Batal</button>
+                <button onclick="saveCustomNode()" id="btnSaveNode" class="btn-primary" style="padding: 0.6rem 1.2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Simpan Data</button>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
+    function deleteCustomNode() {
+        var id = document.getElementById('editNodeId').value;
+        if (confirm("Apakah Anda yakin ingin menghapus kotak ini beserta seluruh bawahannya?")) {
+            chart.removeNode(id);
+            document.getElementById('customEditModal').style.display = 'none';
+        }
+    }
     var chartData = <?= $struktur_json ?>;
 
     // Desain Kustom (Tengah Sempurna)
@@ -131,8 +144,7 @@
         editUI: new OrgChart.editUI(), 
         nodeMenu: {
             add: { text: "Tambah Bawahan" },
-            edit: { text: "Edit Kotak Ini" },
-            remove: { text: "Hapus Kotak Ini" }
+            edit: { text: "Edit Kotak Ini" }
         },
         nodeBinding: {
             field_0: "name",    
@@ -217,17 +229,24 @@
             },
             body: 'struktur_json=' + encodeURIComponent(jsonString)
         })
-        .then(response => response.json())
-        .then(data => {
+        .then(response => response.text())
+        .then(rawText => {
             btn.innerHTML = oldHtml;
             btn.disabled = false;
             var alertContainer = document.getElementById('alert-container');
-            if(data.status === 'success') {
-                alertContainer.innerHTML = '<div style="background: #d1fae5; border-left: 4px solid #10b981; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;"><i class="ri-checkbox-circle-line" style="font-size: 1.5rem; color: #10b981;"></i><p style="color: #065f46; margin: 0;">' + data.message + '</p></div>';
-            } else {
-                alertContainer.innerHTML = '<div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;"><i class="ri-error-warning-line" style="font-size: 1.5rem; color: #ef4444;"></i><p style="color: #991b1b; margin: 0;">' + data.message + '</p></div>';
+            try {
+                var data = JSON.parse(rawText);
+                if(data.status === 'success') {
+                    alertContainer.innerHTML = '<div style="background: #d1fae5; border-left: 4px solid #10b981; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;"><i class="ri-checkbox-circle-line" style="font-size: 1.5rem; color: #10b981;"></i><p style="color: #065f46; margin: 0;">' + data.message + '</p></div>';
+                } else {
+                    var errMsg = data.message || (data.messages && data.messages.error) || data.error || JSON.stringify(data);
+                    alertContainer.innerHTML = '<div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;"><i class="ri-error-warning-line" style="font-size: 1.5rem; color: #ef4444;"></i><p style="color: #991b1b; margin: 0; word-break: break-all;">' + errMsg + '</p></div>';
+                }
+            } catch(e) {
+                // If it's not JSON, print the raw text directly!
+                alertContainer.innerHTML = '<div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;"><i class="ri-error-warning-line" style="font-size: 1.5rem; color: #ef4444;"></i><div style="color: #991b1b; margin: 0; word-break: break-all;">RAW RESPONSE: ' + rawText + '</div></div>';
             }
-            setTimeout(() => { alertContainer.innerHTML = ''; }, 3000);
+            setTimeout(() => { alertContainer.innerHTML = ''; }, 10000);
         })
         .catch(error => {
             btn.innerHTML = oldHtml;
